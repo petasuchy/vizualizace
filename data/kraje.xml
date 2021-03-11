@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VdpExportPrvku xsi:schemaLocation="urn:cz:isvs:ruian:schemas:VdpExportPrvku:v1 https://vdp.cuzk.cz/schema/01/vdp/xsd/vdpExportPrvku/vdpExportPrvku.xsd" xmlns="urn:cz:isvs:ruian:schemas:VdpExportPrvku:v1" xmlns:ns0="urn:cz:isvs:ruian:schemas:CommonTypy:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <Zahlavi>
+      <Generovano>2021-03-08T18:12:12.034+01:00</Generovano>
+      <PocetPolozek>14</PocetPolozek>
+   </Zahlavi>
+   <PrvkyVusc>
+      <Podminky/>
+      <Zaznamy>
+         <Vusc>
+            <Kod>19</Kod>
+            <Nazev>Hlavní město Praha</Nazev>
+            <Id>praha_kraj</Id>
+            <NutsKod>CZ010</NutsKod>
+            <RegionKod>19</RegionKod>
+            <RegionNazev>Praha</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>27</Kod>
+            <Nazev>Středočeský kraj</Nazev>
+            <Id>stredocesky_kraj</Id>
+            <NutsKod>CZ020</NutsKod>
+            <RegionKod>27</RegionKod>
+            <RegionNazev>Střední Čechy</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>35</Kod>
+            <Nazev>Jihočeský kraj</Nazev>
+            <Id>jihocesky_kraj</Id>
+            <NutsKod>CZ031</NutsKod>
+            <RegionKod>35</RegionKod>
+            <RegionNazev>Jihozápad</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>43</Kod>
+            <Nazev>Plzeňský kraj</Nazev>
+            <Id>plzensky_kraj</Id>
+            <NutsKod>CZ032</NutsKod>
+            <RegionKod>35</RegionKod>
+            <RegionNazev>Jihozápad</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>51</Kod>
+            <Nazev>Karlovarský kraj</Nazev>
+            <Id>karlovarsky_kraj</Id>
+            <NutsKod>CZ041</NutsKod>
+            <RegionKod>43</RegionKod>
+            <RegionNazev>Severozápad</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>60</Kod>
+            <Nazev>Ústecký kraj</Nazev>
+            <Id>ustecky_kraj</Id>
+            <NutsKod>CZ042</NutsKod>
+            <RegionKod>43</RegionKod>
+            <RegionNazev>Severozápad</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>78</Kod>
+            <Nazev>Liberecký kraj</Nazev>
+            <Id>liberecky_kraj</Id>
+            <NutsKod>CZ051</NutsKod>
+            <RegionKod>51</RegionKod>
+            <RegionNazev>Severovýchod</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>86</Kod>
+            <Nazev>Královéhradecký kraj</Nazev>
+            <Id>kralovehradecky_kraj</Id>
+            <NutsKod>CZ052</NutsKod>
+            <RegionKod>51</RegionKod>
+            <RegionNazev>Severovýchod</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>94</Kod>
+            <Nazev>Pardubický kraj</Nazev>
+            <Id>pardubicky_kraj</Id>
+            <NutsKod>CZ053</NutsKod>
+            <RegionKod>51</RegionKod>
+            <RegionNazev>Severovýchod</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>108</Kod>
+            <Nazev>Kraj Vysočina</Nazev>
+            <Id>vysocina</Id>
+            <NutsKod>CZ063</NutsKod>
+            <RegionKod>60</RegionKod>
+            <RegionNazev>Jihovýchod</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>116</Kod>
+            <Nazev>Jihomoravský kraj</Nazev>
+            <Id>jihomoravsky_kraj</Id>
+            <NutsKod>CZ064</NutsKod>
+            <RegionKod>60</RegionKod>
+            <RegionNazev>Jihovýchod</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>124</Kod>
+            <Nazev>Olomoucký kraj</Nazev>
+            <Id>olomoucky_kraj</Id>
+            <NutsKod>CZ071</NutsKod>
+            <RegionKod>78</RegionKod>
+            <RegionNazev>Střední Morava</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>132</Kod>
+            <Nazev>Moravskoslezský kraj</Nazev>
+            <Id>moravskoslezky_kraj</Id>
+            <NutsKod>CZ080</NutsKod>
+            <RegionKod>86</RegionKod>
+            <RegionNazev>Moravskoslezsko</RegionNazev>
+         </Vusc>
+         <Vusc>
+            <Kod>141</Kod>
+            <Nazev>Zlínský kraj</Nazev>
+            <Id>zlinsky_kraj</Id>
+            <NutsKod>CZ072</NutsKod>
+            <RegionKod>78</RegionKod>
+            <RegionNazev>Střední Morava</RegionNazev>
+         </Vusc>
+      </Zaznamy>
+   </PrvkyVusc>
+</VdpExportPrvku>

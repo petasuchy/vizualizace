@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VdpExportPrvku xsi:schemaLocation="urn:cz:isvs:ruian:schemas:VdpExportPrvku:v1 https://vdp.cuzk.cz/schema/01/vdp/xsd/vdpExportPrvku/vdpExportPrvku.xsd" xmlns="urn:cz:isvs:ruian:schemas:VdpExportPrvku:v1" xmlns:ns0="urn:cz:isvs:ruian:schemas:CommonTypy:v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <Zahlavi>
+      <Generovano>2021-03-08T20:37:49.659+01:00</Generovano>
+      <PocetPolozek>77</PocetPolozek>
+   </Zahlavi>
+   <PrvkyOkres>
+      <Podminky/>
+      <Zaznamy>
+         <Okres>
+            <Kod>3100</Kod>
+            <Nazev>Hlavní město Praha</Nazev>
+            <VuscKod>19</VuscKod>
+            <VuscNazev>Hlavní město Praha</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3201</Kod>
+            <Nazev>Benešov</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3202</Kod>
+            <Nazev>Beroun</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3203</Kod>
+            <Nazev>Kladno</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3204</Kod>
+            <Nazev>Kolín</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3205</Kod>
+            <Nazev>Kutná Hora</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3206</Kod>
+            <Nazev>Mělník</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3207</Kod>
+            <Nazev>Mladá Boleslav</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3208</Kod>
+            <Nazev>Nymburk</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3209</Kod>
+            <Nazev>Praha-východ</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3210</Kod>
+            <Nazev>Praha-západ</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3211</Kod>
+            <Nazev>Příbram</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3212</Kod>
+            <Nazev>Rakovník</Nazev>
+            <VuscKod>27</VuscKod>
+            <VuscNazev>Středočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3301</Kod>
+            <Nazev>České Budějovice</Nazev>
+            <VuscKod>35</VuscKod>
+            <VuscNazev>Jihočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3302</Kod>
+            <Nazev>Český Krumlov</Nazev>
+            <VuscKod>35</VuscKod>
+            <VuscNazev>Jihočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3303</Kod>
+            <Nazev>Jindřichův Hradec</Nazev>
+            <VuscKod>35</VuscKod>
+            <VuscNazev>Jihočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3304</Kod>
+            <Nazev>Pelhřimov</Nazev>
+            <VuscKod>108</VuscKod>
+            <VuscNazev>Kraj Vysočina</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3305</Kod>
+            <Nazev>Písek</Nazev>
+            <VuscKod>35</VuscKod>
+            <VuscNazev>Jihočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3306</Kod>
+            <Nazev>Prachatice</Nazev>
+            <VuscKod>35</VuscKod>
+            <VuscNazev>Jihočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3307</Kod>
+            <Nazev>Strakonice</Nazev>
+            <VuscKod>35</VuscKod>
+            <VuscNazev>Jihočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3308</Kod>
+            <Nazev>Tábor</Nazev>
+            <VuscKod>35</VuscKod>
+            <VuscNazev>Jihočeský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3401</Kod>
+            <Nazev>Domažlice</Nazev>
+            <VuscKod>43</VuscKod>
+            <VuscNazev>Plzeňský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3402</Kod>
+            <Nazev>Cheb</Nazev>
+            <VuscKod>51</VuscKod>
+            <VuscNazev>Karlovarský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3403</Kod>
+            <Nazev>Karlovy Vary</Nazev>
+            <VuscKod>51</VuscKod>
+            <VuscNazev>Karlovarský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3404</Kod>
+            <Nazev>Klatovy</Nazev>
+            <VuscKod>43</VuscKod>
+            <VuscNazev>Plzeňský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3405</Kod>
+            <Nazev>Plzeň-město</Nazev>
+            <VuscKod>43</VuscKod>
+            <VuscNazev>Plzeňský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3406</Kod>
+            <Nazev>Plzeň-jih</Nazev>
+            <VuscKod>43</VuscKod>
+            <VuscNazev>Plzeňský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3407</Kod>
+            <Nazev>Plzeň-sever</Nazev>
+            <VuscKod>43</VuscKod>
+            <VuscNazev>Plzeňský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3408</Kod>
+            <Nazev>Rokycany</Nazev>
+            <VuscKod>43</VuscKod>
+            <VuscNazev>Plzeňský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3409</Kod>
+            <Nazev>Sokolov</Nazev>
+            <VuscKod>51</VuscKod>
+            <VuscNazev>Karlovarský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3410</Kod>
+            <Nazev>Tachov</Nazev>
+            <VuscKod>43</VuscKod>
+            <VuscNazev>Plzeňský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3501</Kod>
+            <Nazev>Česká Lípa</Nazev>
+            <VuscKod>78</VuscKod>
+            <VuscNazev>Liberecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3502</Kod>
+            <Nazev>Děčín</Nazev>
+            <VuscKod>60</VuscKod>
+            <VuscNazev>Ústecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3503</Kod>
+            <Nazev>Chomutov</Nazev>
+            <VuscKod>60</VuscKod>
+            <VuscNazev>Ústecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3504</Kod>
+            <Nazev>Jablonec nad Nisou</Nazev>
+            <VuscKod>78</VuscKod>
+            <VuscNazev>Liberecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3505</Kod>
+            <Nazev>Liberec</Nazev>
+            <VuscKod>78</VuscKod>
+            <VuscNazev>Liberecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3506</Kod>
+            <Nazev>Litoměřice</Nazev>
+            <VuscKod>60</VuscKod>
+            <VuscNazev>Ústecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3507</Kod>
+            <Nazev>Louny</Nazev>
+            <VuscKod>60</VuscKod>
+            <VuscNazev>Ústecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3508</Kod>
+            <Nazev>Most</Nazev>
+            <VuscKod>60</VuscKod>
+            <VuscNazev>Ústecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3509</Kod>
+            <Nazev>Teplice</Nazev>
+            <VuscKod>60</VuscKod>
+            <VuscNazev>Ústecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3510</Kod>
+            <Nazev>Ústí nad Labem</Nazev>
+            <VuscKod>60</VuscKod>
+            <VuscNazev>Ústecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3601</Kod>
+            <Nazev>Havlíčkův Brod</Nazev>
+            <VuscKod>108</VuscKod>
+            <VuscNazev>Kraj Vysočina</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3602</Kod>
+            <Nazev>Hradec Králové</Nazev>
+            <VuscKod>86</VuscKod>
+            <VuscNazev>Královéhradecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3603</Kod>
+            <Nazev>Chrudim</Nazev>
+            <VuscKod>94</VuscKod>
+            <VuscNazev>Pardubický kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3604</Kod>
+            <Nazev>Jičín</Nazev>
+            <VuscKod>86</VuscKod>
+            <VuscNazev>Královéhradecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3605</Kod>
+            <Nazev>Náchod</Nazev>
+            <VuscKod>86</VuscKod>
+            <VuscNazev>Královéhradecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3606</Kod>
+            <Nazev>Pardubice</Nazev>
+            <VuscKod>94</VuscKod>
+            <VuscNazev>Pardubický kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3607</Kod>
+            <Nazev>Rychnov nad Kněžnou</Nazev>
+            <VuscKod>86</VuscKod>
+            <VuscNazev>Královéhradecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3608</Kod>
+            <Nazev>Semily</Nazev>
+            <VuscKod>78</VuscKod>
+            <VuscNazev>Liberecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3609</Kod>
+            <Nazev>Svitavy</Nazev>
+            <VuscKod>94</VuscKod>
+            <VuscNazev>Pardubický kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3610</Kod>
+            <Nazev>Trutnov</Nazev>
+            <VuscKod>86</VuscKod>
+            <VuscNazev>Královéhradecký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3611</Kod>
+            <Nazev>Ústí nad Orlicí</Nazev>
+            <VuscKod>94</VuscKod>
+            <VuscNazev>Pardubický kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3701</Kod>
+            <Nazev>Blansko</Nazev>
+            <VuscKod>116</VuscKod>
+            <VuscNazev>Jihomoravský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3702</Kod>
+            <Nazev>Brno-město</Nazev>
+            <VuscKod>116</VuscKod>
+            <VuscNazev>Jihomoravský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3703</Kod>
+            <Nazev>Brno-venkov</Nazev>
+            <VuscKod>116</VuscKod>
+            <VuscNazev>Jihomoravský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3704</Kod>
+            <Nazev>Břeclav</Nazev>
+            <VuscKod>116</VuscKod>
+            <VuscNazev>Jihomoravský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3705</Kod>
+            <Nazev>Zlín</Nazev>
+            <VuscKod>141</VuscKod>
+            <VuscNazev>Zlínský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3706</Kod>
+            <Nazev>Hodonín</Nazev>
+            <VuscKod>116</VuscKod>
+            <VuscNazev>Jihomoravský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3707</Kod>
+            <Nazev>Jihlava</Nazev>
+            <VuscKod>108</VuscKod>
+            <VuscNazev>Kraj Vysočina</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3708</Kod>
+            <Nazev>Kroměříž</Nazev>
+            <VuscKod>141</VuscKod>
+            <VuscNazev>Zlínský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3709</Kod>
+            <Nazev>Prostějov</Nazev>
+            <VuscKod>124</VuscKod>
+            <VuscNazev>Olomoucký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3710</Kod>
+            <Nazev>Třebíč</Nazev>
+            <VuscKod>108</VuscKod>
+            <VuscNazev>Kraj Vysočina</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3711</Kod>
+            <Nazev>Uherské Hradiště</Nazev>
+            <VuscKod>141</VuscKod>
+            <VuscNazev>Zlínský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3712</Kod>
+            <Nazev>Vyškov</Nazev>
+            <VuscKod>116</VuscKod>
+            <VuscNazev>Jihomoravský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3713</Kod>
+            <Nazev>Znojmo</Nazev>
+            <VuscKod>116</VuscKod>
+            <VuscNazev>Jihomoravský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3714</Kod>
+            <Nazev>Žďár nad Sázavou</Nazev>
+            <VuscKod>108</VuscKod>
+            <VuscNazev>Kraj Vysočina</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3801</Kod>
+            <Nazev>Bruntál</Nazev>
+            <VuscKod>132</VuscKod>
+            <VuscNazev>Moravskoslezský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3802</Kod>
+            <Nazev>Frýdek-Místek</Nazev>
+            <VuscKod>132</VuscKod>
+            <VuscNazev>Moravskoslezský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3803</Kod>
+            <Nazev>Karviná</Nazev>
+            <VuscKod>132</VuscKod>
+            <VuscNazev>Moravskoslezský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3804</Kod>
+            <Nazev>Nový Jičín</Nazev>
+            <VuscKod>132</VuscKod>
+            <VuscNazev>Moravskoslezský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3805</Kod>
+            <Nazev>Olomouc</Nazev>
+            <VuscKod>124</VuscKod>
+            <VuscNazev>Olomoucký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3806</Kod>
+            <Nazev>Opava</Nazev>
+            <VuscKod>132</VuscKod>
+            <VuscNazev>Moravskoslezský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3807</Kod>
+            <Nazev>Ostrava-město</Nazev>
+            <VuscKod>132</VuscKod>
+            <VuscNazev>Moravskoslezský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3808</Kod>
+            <Nazev>Přerov</Nazev>
+            <VuscKod>124</VuscKod>
+            <VuscNazev>Olomoucký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3809</Kod>
+            <Nazev>Šumperk</Nazev>
+            <VuscKod>124</VuscKod>
+            <VuscNazev>Olomoucký kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3810</Kod>
+            <Nazev>Vsetín</Nazev>
+            <VuscKod>141</VuscKod>
+            <VuscNazev>Zlínský kraj</VuscNazev>
+         </Okres>
+         <Okres>
+            <Kod>3811</Kod>
+            <Nazev>Jeseník</Nazev>
+            <VuscKod>124</VuscKod>
+            <VuscNazev>Olomoucký kraj</VuscNazev>
+         </Okres>
+      </Zaznamy>
+   </PrvkyOkres>
+</VdpExportPrvku>

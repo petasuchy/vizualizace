@@ -1,0 +1,21 @@
+.kraj {
+    stroke: #000000;
+    fill: #ffffff;
+    fill-opacity: 75%;
+    stroke-width: 5;
+    opacity: 100%;
+    display: inline;
+    stroke-linejoin: round;
+    stroke-miterlimit: 3.86369991;
+    stroke-dasharray: none
+}
+
+.okres {
+    stroke-linejoin: round;
+    stroke: #FF0055;
+    stroke-width: 1;
+    fill-opacity: 100%;
+    stroke-miterlimit: 4;
+    stroke-dasharray: none;
+    opacity: 100%;
+}
