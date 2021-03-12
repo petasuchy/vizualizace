@@ -29,7 +29,7 @@ function drawInfo(kraj) {
     newValue += "<p class=\"card-text\">" + printPrettyNumber(kraj.pocetObyvatel) + " obyvatel [" + Math.round(10000 * kraj.pocetObyvatel / pocetObyvatelCR) / 100 + "% populace ČR]";
     newValue += "<br>K datu " + date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + " :";
     newValue += "</p><ul>"
-    newValue += "<li>Vyočkováno celkem: " + printPrettyNumber(kraj.ockovani.celkem) + " dávek ("+Math.round(1000 * kraj.ockovani.celkem / kraj.pocetObyvatel) / 1000+" dávky na osobu)<ul>";
+    newValue += "<li>Vyočkováno celkem: " + printPrettyNumber(kraj.ockovani.celkem) + " dávek (" + Math.round(1000 * kraj.ockovani.celkem / kraj.pocetObyvatel) / 1000 + " dávky na osobu)<ul>";
     newValue += "<li>1. dávkou naočkováno: " + printPrettyNumber(kraj.ockovani.prvniDavka) + " (" + Math.round(10000 * kraj.ockovani.prvniDavka / kraj.pocetObyvatel) / 100 + "% obyvatel)</li>";
     newValue += "<li>2. dávkou naočkováno: " + printPrettyNumber(kraj.ockovani.druhaDavka) + " (" + Math.round(10000 * kraj.ockovani.druhaDavka / kraj.pocetObyvatel) / 100 + "% obyvatel)</li>";
     newValue += "</ul></li></ul></div></div>";
@@ -97,33 +97,33 @@ function drawBarvyKraju(datum) {
     // nakreslime stupnici barev
     var c = document.getElementById("legendCanvas");
     var ctx = c.getContext("2d");
-    c.width = document.getElementById("levyPanel").offsetWidth*0.75;
+    c.width = document.getElementById("levyPanel").offsetWidth * 0.75;
     // nadefinovat gradienty
     // createLinearGradient(x leveho rohu, 0, x praveho rohu, 0)
-    var grdPodprumer = ctx.createLinearGradient(c.width*0.1, 0, c.width*0.5, 0);
-    grdPodprumer.addColorStop(0, "#"+worstKrajColor);
-    grdPodprumer.addColorStop(1, "#"+averageKrajColor);
-    var grdNadprumer = ctx.createLinearGradient(c.width*0.5, 0, c.width*0.9, 0);
-    grdNadprumer.addColorStop(0, "#"+averageKrajColor);
-    grdNadprumer.addColorStop(1, "#"+bestKrajColor);
+    var grdPodprumer = ctx.createLinearGradient(c.width * 0.1, 0, c.width * 0.5, 0);
+    grdPodprumer.addColorStop(0, "#" + worstKrajColor);
+    grdPodprumer.addColorStop(1, "#" + averageKrajColor);
+    var grdNadprumer = ctx.createLinearGradient(c.width * 0.5, 0, c.width * 0.9, 0);
+    grdNadprumer.addColorStop(0, "#" + averageKrajColor);
+    grdNadprumer.addColorStop(1, "#" + bestKrajColor);
 
     // nakreslit samotne obdelniky vyplnene gradientem
     ctx.fillStyle = grdPodprumer;
-    ctx.fillRect(c.width*0.1, 0, c.width*0.4, 20);
+    ctx.fillRect(c.width * 0.1, 0, c.width * 0.4, 20);
     ctx.fillStyle = grdNadprumer;
-    ctx.fillRect(c.width*0.5, 0, c.width*0.4, 20);
-    ctx.strokeRect(c.width*0.1, 0, c.width*0.8, 20)
+    ctx.fillRect(c.width * 0.5, 0, c.width * 0.4, 20);
+    ctx.strokeRect(c.width * 0.1, 0, c.width * 0.8, 20)
 
     //popisky
-    if (c.width<500){
+    if (c.width < 500) {
         ctx.font = "1ex Helvetica";
-    }else{
+    } else {
         ctx.font = "2ex Helvetica";
     }
     ctx.fillStyle = "#000000";
-    var textWidth = ctx.measureText((Math.round(1000*nejlepsiKraj)/1000)+" dávky na osobu");
-    ctx.fillText((Math.round(1000*nejhorsiKraj)/1000)+" dávky na osobu",c.width*0.1, 40);
-    ctx.fillText((Math.round(1000*nejlepsiKraj)/1000)+" dávky na osobu",c.width*0.9-textWidth.width, 40);
+    var textWidth = ctx.measureText((Math.round(1000 * nejlepsiKraj) / 1000) + " dávky na osobu");
+    ctx.fillText((Math.round(1000 * nejhorsiKraj) / 1000) + " dávky na osobu", c.width * 0.1, 40);
+    ctx.fillText((Math.round(1000 * nejlepsiKraj) / 1000) + " dávky na osobu", c.width * 0.9 - textWidth.width, 40);
 
 
     kraje.forEach(function (kraj) {
@@ -144,4 +144,16 @@ function drawBarvyKraju(datum) {
 
 function animateData() {
     drawBarvyKraju(new Date(dataModified));
+}
+
+function startAnimation() {
+    if (!animation.isRunning) {
+        animation.reference = setInterval(animateData, 5000);
+        animation.isRunning = true;
+    }
+}
+
+function stopAnimation() {
+    clearInterval(animation.reference);
+    animation.isRunning = false;
 }
