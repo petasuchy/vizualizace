@@ -7,11 +7,21 @@ var pocetObyvatelCR = 0;
 var nutsToIdMap = [];
 var dataModified = "";
 var dateEpochString = "2020-12-27";
+var toDateString = "2020-12-27";
 var dateEpoch = new Date(dateEpochString);
+var toDate = new Date(toDateString);
+var lastVaccineDate;
+var lastVaccineDateString;
+var timelineDayCount = 0;
 var problemoveOckovani = 0;
 var animation = {
     reference: "",
     isRunning: false,
+    wasRunning: false,
+}
+var krajSelected = {
+    status: false,
+    kraj: null,
 }
 
 function prepareDayObject(idKraje, idDne, zaznam) {
@@ -39,13 +49,13 @@ function prepareDayObject(idKraje, idDne, zaznam) {
  */
 function countDaysBetweenDates(date1, date2) {
     var diff = Math.abs(date2.getTime() - date1.getTime()) / (1000 * 3600 * 24);
-    if (diff > 500) {
-        console.log(dateEpoch);
-        console.log(dateEpochString);
-        console.log(date1);
-        console.log(date2);
-    }
     return diff;
+}
+
+function dateToDateString(date) {
+    var mesic = "0" + (date.getMonth() + 1);
+    var den = "0" + date.getDate();
+    return date.getFullYear() + "-" + mesic.slice(-2) + "-" + den.slice(-2);
 }
 
 function attachListeners() {
@@ -53,13 +63,41 @@ function attachListeners() {
         document.getElementById(item.id).addEventListener('mouseenter', function (e) {
             // document.getElementById(item.id).style.fill="#ff00cc";
             document.getElementById(item.id).style["fill-opacity"] = 1;
+            if (!krajSelected.status) {
+                drawInfo(item);
+            }
+            if (animation.isRunning) {
+                stopAnimation();
+                animation.wasRunning = true;
+            } else {
+                animation.wasRunning = false;
+            }
+        });
+        document.getElementById(item.id).addEventListener('click', function (e) {
+            document.getElementById(item.id).style["fill-opacity"] = 1;
             drawInfo(item);
-            stopAnimation();
+            if (krajSelected.status) {
+                if (krajSelected.kraj.id != item.id) {
+                    document.getElementById(krajSelected.kraj.id).style["fill-opacity"] = "";
+                }else{
+                    krajSelected.status=false;
+                    krajSelected.kraj = null;
+                    return;
+                }
+            }
+            krajSelected.status = true;
+            krajSelected.kraj = item;
         });
         document.getElementById(item.id).addEventListener('mouseout', function (e) {
-            document.getElementById(item.id).style["fill-opacity"] = "";
-            document.getElementById("popis").innerHTML = "";
-            startAnimation();
+            if (!krajSelected.status || (krajSelected.status && krajSelected.kraj.id != item.id)) {
+                document.getElementById(item.id).style["fill-opacity"] = "";
+            }
+            if (!krajSelected.status) {
+                document.getElementById("popis").innerHTML = "";
+            }
+            if (animation.wasRunning) {
+                startAnimation();
+            }
         });
     });
 }
@@ -119,7 +157,7 @@ function prepareSums() {
             default:
                 indexVakciny = -1;
                 problemoveOckovani += zaznam.celkem_davek;
-                console.log("Problemove ockovani: Neznama vakcina (" + zaznam.vakcina + ")");
+            // console.log("Problemove ockovani: Neznama vakcina (" + zaznam.vakcina + ")");
         }
         var indexSkupiny;
         switch (zaznam.vekova_skupina) {
@@ -168,7 +206,7 @@ function prepareSums() {
             default:
                 indexSkupiny = -1;
                 problemoveOckovani += zaznam.celkem_davek;
-                console.log("Problemove ockovani: Neznama vekova skupina (" + zaznam.vekova_skupina + ")");
+            //console.log("Problemove ockovani: Neznama vekova skupina (" + zaznam.vekova_skupina + ")");
         }
 
         if (typeof kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index] === 'undefined') {
@@ -192,14 +230,18 @@ function prepareSums() {
         }
     });
     //console.log(problemoveOckovani)
-    console.log(kraje);
+    //console.log(kraje);
 }
 
 function initializeView() {
     prepareSums();
     attachListeners();
-    animateData();
-    //startAnimation();   
+    toDate = new Date(dateEpochString);
+    var modifiedDate = new Date(dataModified)
+    document.getElementById("modified").innerHTML = modifiedDate.getDate() + ".&nbsp;"+(modifiedDate.getMonth()+1)+".&nbsp;"+modifiedDate.getFullYear()+"&nbsp;"+("0"+modifiedDate.getHours()).slice(-2)+":"+("0"+modifiedDate.getMinutes()).slice(-2);
+
+    drawBarvyKraju();
+    startAnimation();
 }
 
 function loadDynamicData(jsonString) {
@@ -220,6 +262,13 @@ function loadDynamicData(jsonString) {
     ockovaciZaznamy.sort(function (a, b) {
         return a.datum.localeCompare(b.datum);
     });
+    lastVaccineDateString = ockovaciZaznamy[ockovaciZaznamy.length - 1].datum;
+    lastVaccineDate = new Date(lastVaccineDateString);
+    timelineDayCount = countDaysBetweenDates(lastVaccineDate, dateEpoch);
+    document.getElementById("timeline").setAttribute("max", timelineDayCount);
+    var mesic = "0" + (lastVaccineDate.getMonth() + 1);
+    var den = "0" + lastVaccineDate.getDate();
+    document.getElementById("dateInput").setAttribute("max", dateToDateString(lastVaccineDate));
     //console.log(ockovaciZaznamy);
     initializeView();
 }

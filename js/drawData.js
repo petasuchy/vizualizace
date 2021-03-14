@@ -3,7 +3,7 @@
  * @param {string} inputNumber - cislo, do ktereho maji byt pridany mezery
  */
 function printPrettyNumber(inputNumber) {
-    if (inputNumber < 1000) return inputNumber.toString;
+    if (inputNumber < 1000) return inputNumber + "";
     var inp = "" + inputNumber;
     var i;
     var output = "";
@@ -20,18 +20,27 @@ function printPrettyNumber(inputNumber) {
     }
     return output;
 }
-function drawInfo(kraj) {
-    var date = new Date(dataModified);
 
+function drawPauseButton(){
+    document.getElementById("animationToggle").innerHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" onclick=\"stopAnimation()\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-pause\" viewBox=\"0 0 16 16\"><path d=\"M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z\" /></svg><span class=\"visually-hidden\">Button</span></button>";
+}
+
+function drawPlayButton(){
+    document.getElementById("animationToggle").innerHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" onclick=\"startAnimation()\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-play-btn\" viewBox=\"0 0 16 16\"><path d=\"M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z\"/></svg><span class=\"visually-hidden\">Button</span></button>";
+}
+
+function drawInfo(kraj) {
+    var date = toDate;
+    var dateIndex = countDaysBetweenDates(toDate, dateEpoch);
     var newValue = "<div class=\"card\"><h4 class=\"card-header\">Detail očkování v kraji</h4>";
     newValue += "<div class=\"card-body\">";
     newValue += "<h6 class=\"card-title\">" + kraj.jmeno + "</h6>";
     newValue += "<p class=\"card-text\">" + printPrettyNumber(kraj.pocetObyvatel) + " obyvatel [" + Math.round(10000 * kraj.pocetObyvatel / pocetObyvatelCR) / 100 + "% populace ČR]";
-    newValue += "<br>K datu " + date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + " :";
+    newValue += "<br>K datu " + date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear() + " :";
     newValue += "</p><ul>"
-    newValue += "<li>Vyočkováno celkem: " + printPrettyNumber(kraj.ockovani.celkem) + " dávek (" + Math.round(1000 * kraj.ockovani.celkem / kraj.pocetObyvatel) / 1000 + " dávky na osobu)<ul>";
-    newValue += "<li>1. dávkou naočkováno: " + printPrettyNumber(kraj.ockovani.prvniDavka) + " (" + Math.round(10000 * kraj.ockovani.prvniDavka / kraj.pocetObyvatel) / 100 + "% obyvatel)</li>";
-    newValue += "<li>2. dávkou naočkováno: " + printPrettyNumber(kraj.ockovani.druhaDavka) + " (" + Math.round(10000 * kraj.ockovani.druhaDavka / kraj.pocetObyvatel) / 100 + "% obyvatel)</li>";
+    newValue += "<li>Vyočkováno celkem: " + printPrettyNumber(kraj.prubeznaSuma[dateIndex].celkem) + " dávek (" + Math.round(1000 * kraj.prubeznaSuma[dateIndex].celkem / kraj.pocetObyvatel) / 1000 + " dávky na osobu)<ul>";
+    newValue += "<li>1. dávkou naočkováno: " + printPrettyNumber(kraj.prubeznaSuma[dateIndex].prvniDavka) + " (" + Math.round(10000 * kraj.prubeznaSuma[dateIndex].prvniDavka / kraj.pocetObyvatel) / 100 + "% obyvatel)</li>";
+    newValue += "<li>2. dávkou naočkováno: " + printPrettyNumber(kraj.prubeznaSuma[dateIndex].druhaDavka) + " (" + Math.round(10000 * kraj.prubeznaSuma[dateIndex].druhaDavka / kraj.pocetObyvatel) / 100 + "% obyvatel)</li>";
     newValue += "</ul></li></ul></div></div>";
     document.getElementById("popis").innerHTML = newValue;
 }
@@ -61,23 +70,28 @@ function mixColors(color_1, color_2, weight) {
 
 /**
  * 
- * @param {Date} datum 
  */
-function drawBarvyKraju(datum) {
+function drawBarvyKraju() {
+    var datum = toDate;
+    var dateIndex = countDaysBetweenDates(toDate, dateEpoch);
     var pocetDavek = { celkem: 0, prvniDavka: 0, druhaDavka: 0 };
     var nejhorsiKraj = 100;
     var nejlepsiKraj = 0;
 
+    if (krajSelected.status){
+        drawInfo(krajSelected.kraj);
+    }
+
     kraje.forEach(function (kraj) {
-        pocetDavek.celkem += kraj.ockovani.celkem;
-        pocetDavek.prvniDavka += kraj.ockovani.prvniDavka;
-        pocetDavek.druhaDavka += kraj.ockovani.druhaDavka;
-        kraj.ockovaniProcento = kraj.ockovani.celkem / kraj.pocetObyvatel;
+        pocetDavek.celkem += kraj.prubeznaSuma[dateIndex].celkem;
+        pocetDavek.prvniDavka += kraj.prubeznaSuma[dateIndex].prvniDavka;
+        pocetDavek.druhaDavka += kraj.prubeznaSuma[dateIndex].druhaDavka;
+        kraj.ockovaniProcento = kraj.prubeznaSuma[dateIndex].celkem / kraj.pocetObyvatel;
         if (kraj.ockovaniProcento < nejhorsiKraj) {
-            nejhorsiKraj = Math.round(10000 * kraj.ockovani.celkem / kraj.pocetObyvatel) / 10000;
+            nejhorsiKraj = Math.round(10000 * kraj.prubeznaSuma[dateIndex].celkem / kraj.pocetObyvatel) / 10000;
         }
         if (kraj.ockovaniProcento > nejlepsiKraj) {
-            nejlepsiKraj = Math.round(10000 * kraj.ockovani.celkem / kraj.pocetObyvatel) / 10000;
+            nejlepsiKraj = Math.round(10000 * kraj.prubeznaSuma[dateIndex].celkem / kraj.pocetObyvatel) / 10000;
         }
     });
 
@@ -88,8 +102,8 @@ function drawBarvyKraju(datum) {
     // console.log(celkemOckovani+" ("+celorepublikoveNaockovano*100+" %), nejl: "+nejlepsiKraj+", nejh: "+nejhorsiKraj);
 
     // vyplnime legendu pod mapou vztahujici se na celou republiku
-    var legendaHTML = "<h5>K datu " + datum.getDate() + ". " + (datum.getMonth() + 1) + ". " + datum.getFullYear() + " " + datum.getHours() + ":" + datum.getMinutes() + " :</h5>";
-    legendaHTML += "<ul><li>Vyočkováno celkem: " + printPrettyNumber(pocetDavek.celkem) + " dávek<ul>";
+    var legendaHTML = "<h5>K datu " + datum.getDate() + ". " + (datum.getMonth() + 1) + ". " + datum.getFullYear() + ":</h5>";
+    legendaHTML += "<ul><li>Vyočkováno celkem: " + printPrettyNumber(pocetDavek.celkem) + " dávek (" + Math.round(1000 * pocetDavek.celkem / pocetObyvatelCR) / 1000 + " dávky na osobu)<ul>";
     legendaHTML += "<li>1. dávkou naočkováno: " + printPrettyNumber(pocetDavek.prvniDavka) + " (" + Math.round(10000 * pocetDavek.prvniDavka / pocetObyvatelCR) / 100 + "% populace)</li>";
     legendaHTML += "<li>2. dávkou naočkováno: " + printPrettyNumber(pocetDavek.druhaDavka) + " (" + Math.round(10000 * pocetDavek.druhaDavka / pocetObyvatelCR) / 100 + "% populace)</li></ul></li></ul>";
     document.getElementById("legenda").innerHTML = legendaHTML;
@@ -127,8 +141,11 @@ function drawBarvyKraju(datum) {
 
 
     kraje.forEach(function (kraj) {
-        var proockovanyPodil = kraj.ockovani.celkem / kraj.pocetObyvatel;
-        if (proockovanyPodil <= celorepublikoveNaockovano) {
+        var proockovanyPodil = kraj.prubeznaSuma[dateIndex].celkem / kraj.pocetObyvatel;
+        if (proockovanyPodil == 0) {
+            kraj.barva = "#ffffff";
+        }
+        if (proockovanyPodil <= celorepublikoveNaockovano && proockovanyPodil > 0) {
             // podprumerne ockovani
             kraj.barva = mixColors(averageKrajColor, worstKrajColor, Math.round(100 * (proockovanyPodil - nejhorsiKraj) / (celorepublikoveNaockovano - nejhorsiKraj)));
             // console.log("["+kraj.jmeno+"] "+proockovanyPodil*100+" % (podprumer) - barva: "+kraj.barva);         
@@ -142,18 +159,70 @@ function drawBarvyKraju(datum) {
     });
 }
 
+function updateTimeline() {
+    document.getElementById("timeline").value = countDaysBetweenDates(dateEpoch, toDate);
+}
+
+function updateDatePicker() {
+    document.getElementById("dateInput").value = dateToDateString(toDate);
+}
+
+function inputChanged(source) {
+    if (animation.isRunning){
+        animation.wasRunning = true;
+        stopAnimation();
+    }
+    switch (source) {
+        case "timeline":
+            console.log("Zmena, z timeline");
+            var dayDiff = parseInt(document.getElementById("timeline").value);
+            var aktualniDatum = new Date(dateEpoch.getTime());
+            aktualniDatum.setDate(27 + dayDiff);
+            toDate = new Date(aktualniDatum.getTime());
+            updateDatePicker();
+            break;
+        case "datepicker":
+            // console.log("Zmena, z datepickeru");
+            console.log(document.getElementById("dateInput").value);
+            toDate = new Date(document.getElementById("dateInput").value);
+            console.log(toDate);
+            updateTimeline();
+            break;
+        case "animation":
+            updateDatePicker();
+            updateTimeline();
+            break;
+        default:
+            console.log("Zmena, ale neznamy zdroj");
+    }
+    drawBarvyKraju();
+    if(animation.wasRunning){
+        startAnimation();
+    }
+}
+
 function animateData() {
-    drawBarvyKraju(new Date(dataModified));
+    // drawBarvyKraju();
+    if (toDate >= lastVaccineDate) {
+        toDate = new Date(dateEpochString);
+    } else {
+        var oDen = new Date(toDate.getTime());
+        oDen.setDate(oDen.getDate() + 1);
+        toDate = new Date(oDen.getTime());
+    }
+    inputChanged("animation");
 }
 
 function startAnimation() {
     if (!animation.isRunning) {
-        animation.reference = setInterval(animateData, 5000);
+        animation.reference = setInterval(animateData, 1000);
         animation.isRunning = true;
     }
+    drawPauseButton();
 }
 
 function stopAnimation() {
     clearInterval(animation.reference);
     animation.isRunning = false;
+    drawPlayButton();
 }

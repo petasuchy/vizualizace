@@ -17,10 +17,15 @@
 </head>
 
 <body>
+    <nav style="background-color: #b9b9b9;">
+        <div class="container" >
+            <p class="text-center"><small>Verze: 0.0.1, vývoj: <a href = "mailto:peta.suchy@gmail.com">Petr Suchý</a>, data o krajích: <a href="https://vdp.cuzk.cz/vdp/ruian/vusc/vyhledej?rs.kod=&vc.nazev=&vc.kod=&ohrada.id=&vcg.sort=NAZEV&search=Vyhledat">ČÚZK Ruian</a>, data o populaci: <a href="https://www.czso.cz/csu/czso/obyvatelstvo-podle-petiletych-vekovych-skupin-a-pohlavi-v-krajich-a-okresech">ČSÚ</a> (platné k 31.12.2019), aktuální data o očkování: <a href="https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani.json">Otevřená data ministerstva zdravotnictní ČR</a> (poslední změna: <span id="modified"></span>)</small></p>
+        </div>
+    </nav>
     <div class="container">
-        <h1 class="text-center">Postup očkování v krajích</h1>
         <div class="row">
             <div class="col-sm-8" id="levyPanel">
+                <h1 class="text-center">Postup očkování v krajích</h1>
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                     y="0px" class="czech-map__svg" id="mapa" viewBox="0 0 300 180" xml:space="preserve">
                     <g id="okresy" transform="translate(0,0) scale(0.5)" display="none">
@@ -289,10 +294,13 @@
                 </svg>
                 <canvas id="legendCanvas" width="1" height="50"></canvas>
                 <div class="row">
-                    <div class="col-9"><label for="timeline" class="form-label">Časová osa</label><input type="range"
-                            class="form-range" min="0" max="100" step="1" id="timeline"></div>
+                    <div class="col-1" id="animationToggle"></div>
+                    <div class="col-8"><label for="timeline" class="form-label">Časová osa</label><input type="range"
+                            class="form-range" min="0" max="100" step="1" value="0" id="timeline"
+                            oninput="inputChanged('timeline')"></div>
                     <div class="col"><label for="dateInput" class="form-label">Datum</label>
-                        <input class="form-control" type="date" value="2020-12-27" min="2020-12-27" id="dateInput">
+                        <input class="form-control" type="date" value="2020-12-27" min="2020-12-27" max=""
+                            id="dateInput" onchange="inputChanged('datepicker')">
                     </div>
                 </div>
                 <div>
