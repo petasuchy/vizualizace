@@ -171,6 +171,8 @@ function inputChanged(source) {
     if (animation.isRunning){
         animation.wasRunning = true;
         stopAnimation();
+    }else{
+        animation.wasRunning = false;
     }
     switch (source) {
         case "timeline":
