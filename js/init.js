@@ -2,8 +2,8 @@
 // inicializace globalnich promennych
 var kraje = [];
 var okresy = [];
+var republika;
 var ockovaciZaznamy = [];
-var pocetObyvatelCR = 0;
 var nutsToIdMap = [];
 var dataModified = "";
 var dateEpochString = "2020-12-27";
@@ -24,7 +24,7 @@ var krajSelected = {
     kraj: null,
 }
 
-function prepareDayObject(idKraje, idDne, zaznam) {
+function prepareDayObject(idKraje, idDne) {
     if (idDne <= 0) return;
     if (typeof kraje[idKraje].prubeznaSuma[idDne] === 'undefined') {
         if (typeof kraje[idKraje].prubeznaSuma[idDne - 1] === 'undefined') {
@@ -32,12 +32,31 @@ function prepareDayObject(idKraje, idDne, zaznam) {
             prepareDayObject(idKraje, idDne - 1);
         }
         // zkopirovat
-        kraje[idKraje].prubeznaSuma[idDne] = Object.assign({}, kraje[idKraje].prubeznaSuma[idDne - 1]);
+        // kraje[idKraje].prubeznaSuma[idDne] = Object.assign({}, kraje[idKraje].prubeznaSuma[idDne - 1]);
+        kraje[idKraje].prubeznaSuma[idDne] = JSON.parse(JSON.stringify(kraje[idKraje].prubeznaSuma[idDne - 1]));
         var datumZaznamu = new Date(dateEpoch.getTime());
         datumZaznamu.setDate(27 + idDne);
         var mesic = "0" + (datumZaznamu.getMonth() + 1);
         var den = "0" + datumZaznamu.getDate();
         kraje[idKraje].prubeznaSuma[idDne].datum = datumZaznamu.getFullYear() + "-" + mesic.slice(-2) + "-" + den.slice(-2);
+    } else { return; }
+}
+
+function prepareDayObjectRepublika(idDne) {
+    if (idDne <= 0) return;
+    if (typeof republika.prubeznaSuma[idDne] === 'undefined') {
+        if (typeof republika.prubeznaSuma[idDne - 1] === 'undefined') {
+            // predchozi neexistuje, takze rekurzivne zavolam sama sebe
+            prepareDayObjectRepublika(idDne - 1);
+        }
+        // zkopirovat
+        // kraje[idKraje].prubeznaSuma[idDne] = Object.assign({}, kraje[idKraje].prubeznaSuma[idDne - 1]);
+        republika.prubeznaSuma[idDne] = JSON.parse(JSON.stringify(republika.prubeznaSuma[idDne - 1]));
+        var datumZaznamu = new Date(dateEpoch.getTime());
+        datumZaznamu.setDate(27 + idDne);
+        var mesic = "0" + (datumZaznamu.getMonth() + 1);
+        var den = "0" + datumZaznamu.getDate();
+        republika.prubeznaSuma[idDne].datum = datumZaznamu.getFullYear() + "-" + mesic.slice(-2) + "-" + den.slice(-2);
     } else { return; }
 }
 
@@ -59,6 +78,13 @@ function dateToDateString(date) {
 }
 
 function attachListeners() {
+    // pauzovani animace mezernikem
+    document.addEventListener('keydown', event => {
+        if (event.code === 'Space') {
+            spacebarListener();
+        }
+    })
+
     kraje.forEach(function (item) {
         document.getElementById(item.id).addEventListener('mouseenter', function (e) {
             // document.getElementById(item.id).style.fill="#ff00cc";
@@ -79,8 +105,8 @@ function attachListeners() {
             if (krajSelected.status) {
                 if (krajSelected.kraj.id != item.id) {
                     document.getElementById(krajSelected.kraj.id).style["fill-opacity"] = "";
-                }else{
-                    krajSelected.status=false;
+                } else {
+                    krajSelected.status = false;
                     krajSelected.kraj = null;
                     return;
                 }
@@ -93,7 +119,7 @@ function attachListeners() {
                 document.getElementById(item.id).style["fill-opacity"] = "";
             }
             if (!krajSelected.status) {
-                document.getElementById("popis").innerHTML = "";
+                document.getElementById("detail").style["display"] = "none";
             }
             if (animation.wasRunning) {
                 startAnimation();
@@ -103,8 +129,38 @@ function attachListeners() {
 }
 
 function prepareSums() {
+    // pripravime datove struktury republiky
+    republika.prubeznaSuma = [];
+    republika.prubeznaSuma[0] = {
+        datum: dateEpochString,
+        celkem: 0,
+        prvniDavka: 0,
+        druhaDavka: 0,
+        vakcina: [
+            { nazev: "Comirnaty", suma: 0, prvniDavka: 0, druhaDavka: 0 },
+            { nazev: "AstraZeneca", suma: 0, prvniDavka: 0, druhaDavka: 0 },
+            { nazev: "Moderna", suma: 0, prvniDavka: 0, druhaDavka: 0 }
+        ],
+        vekova_skupina: [
+            { nazev: "0-17", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "18-24", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "25-29", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "30-34", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "35-39", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "40-44", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "45-49", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "50-54", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "55-59", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "60-64", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "65-69", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "70-74", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "75-79", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+            { nazev: "80", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+        ],
+    }
+
+    // pripravime datove struktury vsech kraju
     kraje.forEach(function (kraj) {
-        kraj.ockovani = { celkem: 0, prvniDavka: 0, druhaDavka: 0 };
         kraj.prubeznaSuma = [];
         kraj.prubeznaSuma[0] = {
             datum: dateEpochString,
@@ -112,9 +168,9 @@ function prepareSums() {
             prvniDavka: 0,
             druhaDavka: 0,
             vakcina: [
-                { nazev: "Comirnaty", suma: 0 },
-                { nazev: "AstraZeneca", suma: 0 },
-                { nazev: "Moderna", suma: 0 }
+                { nazev: "Comirnaty", suma: 0, prvniDavka: 0, druhaDavka: 0 },
+                { nazev: "AstraZeneca", suma: 0, prvniDavka: 0, druhaDavka: 0 },
+                { nazev: "Moderna", suma: 0, prvniDavka: 0, druhaDavka: 0 }
             ],
             vekova_skupina: [
                 { nazev: "0-17", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
@@ -130,15 +186,9 @@ function prepareSums() {
                 { nazev: "65-69", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
                 { nazev: "70-74", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
                 { nazev: "75-79", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "80+", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
+                { nazev: "80", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
             ],
         }
-    });
-
-    ockovaciZaznamy.forEach(function (item) {
-        kraje[nutsToIdMap[item.kraj_nuts_kod]].ockovani.celkem += item.celkem_davek;
-        kraje[nutsToIdMap[item.kraj_nuts_kod]].ockovani.prvniDavka += item.prvnich_davek;
-        kraje[nutsToIdMap[item.kraj_nuts_kod]].ockovani.druhaDavka += item.druhych_davek;
     });
 
     ockovaciZaznamy.forEach(function (zaznam) {
@@ -209,28 +259,69 @@ function prepareSums() {
             //console.log("Problemove ockovani: Neznama vekova skupina (" + zaznam.vekova_skupina + ")");
         }
 
-        if (typeof kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index] === 'undefined') {
-            prepareDayObject(nutsToIdMap[zaznam.kraj_nuts_kod], index, zaznam);
+        // zkontrolujeme, jestli ockovani dokazeme priradit ke kraji
+        var krajExists;
+        if (zaznam.kraj_nuts_kod == "") {
+            // console.log("Problemove ockovani: Neznamy kraj");
+            problemoveOckovani += zaznam.celkem_davek;
+            krajExists = false;
+        } else {
+            krajExists = true;
         }
-        kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].celkem += zaznam.celkem_davek;
-        kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].prvniDavka += zaznam.prvnich_davek;
-        kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].druhaDavka += zaznam.druhych_davek;
 
+        // zkontrolujeme, jestli uz jsou pro dany den pripraveny struktury a pripadne je pripravime
+        if (krajExists && typeof kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index] === 'undefined') {
+            prepareDayObject(nutsToIdMap[zaznam.kraj_nuts_kod], index);
+        }
+        if (typeof republika.prubeznaSuma[index] === 'undefined') {
+            prepareDayObjectRepublika(index);
+        }
+
+        // pricist pocty davek
+        if (krajExists) {
+            kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].celkem += zaznam.celkem_davek;
+            kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].prvniDavka += zaznam.prvnich_davek;
+            kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].druhaDavka += zaznam.druhych_davek;
+        }
+        republika.prubeznaSuma[index].celkem += zaznam.celkem_davek;
+        republika.prubeznaSuma[index].prvniDavka += zaznam.prvnich_davek;
+        republika.prubeznaSuma[index].druhaDavka += zaznam.druhych_davek;
+
+        // pricist zaznamy vakcin
         if (indexVakciny >= 0) {
-            // console.log("index: " + index + ", indexVakciny: " + indexVakciny + ", zaznam.celkem_davek: " + zaznam.celkem_davek);
-            kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vakcina[indexVakciny].suma += zaznam.celkem_davek;
+            if (krajExists) {
+                kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vakcina[indexVakciny].suma += zaznam.celkem_davek;
+                kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vakcina[indexVakciny].prvniDavka += zaznam.prvnich_davek;
+                kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vakcina[indexVakciny].druhaDavka += zaznam.druhych_davek;
+            }
+            republika.prubeznaSuma[index].vakcina[indexVakciny].suma += zaznam.celkem_davek;
+            republika.prubeznaSuma[index].vakcina[indexVakciny].prvniDavka += zaznam.prvnich_davek;
+            republika.prubeznaSuma[index].vakcina[indexVakciny].druhaDavka += zaznam.druhych_davek;
         }
+
+        // pricist zaznamy vekovych skupin
         if (indexSkupiny >= 0) {
-            kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vekova_skupina[indexSkupiny].celkem += zaznam.celkem_davek;
-            kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vekova_skupina[indexSkupiny].prvniDavka += zaznam.prvnich_davek;
-            kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vekova_skupina[indexSkupiny].druhaDavka += zaznam.druhych_davek;
+            if (krajExists) {
+                kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vekova_skupina[indexSkupiny].celkem += zaznam.celkem_davek;
+                kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vekova_skupina[indexSkupiny].prvniDavka += zaznam.prvnich_davek;
+                kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vekova_skupina[indexSkupiny].druhaDavka += zaznam.druhych_davek;
+            }
+            republika.prubeznaSuma[index].vekova_skupina[indexSkupiny].celkem += zaznam.celkem_davek;
+            republika.prubeznaSuma[index].vekova_skupina[indexSkupiny].prvniDavka += zaznam.prvnich_davek;
+            republika.prubeznaSuma[index].vekova_skupina[indexSkupiny].druhaDavka += zaznam.druhych_davek;
         }
+
+        // pricist zaznamy vakcin u konkretnich vekovych skupin
         if (indexSkupiny >= 0 && indexVakciny >= 0) {
-            kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vekova_skupina[indexSkupiny].vakcina[indexVakciny] += zaznam.celkem_davek;
+            if (krajExists) {
+                kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vekova_skupina[indexSkupiny].vakcina[indexVakciny] += zaznam.celkem_davek;
+            }
+            republika.prubeznaSuma[index].vekova_skupina[indexSkupiny].vakcina[indexVakciny] += zaznam.celkem_davek;
         }
     });
+
     //console.log(problemoveOckovani)
-    //console.log(kraje);
+    //console.log(republika);
 }
 
 function initializeView() {
@@ -238,7 +329,7 @@ function initializeView() {
     attachListeners();
     toDate = new Date(dateEpochString);
     var modifiedDate = new Date(dataModified)
-    document.getElementById("modified").innerHTML = modifiedDate.getDate() + ".&nbsp;"+(modifiedDate.getMonth()+1)+".&nbsp;"+modifiedDate.getFullYear()+"&nbsp;"+("0"+modifiedDate.getHours()).slice(-2)+":"+("0"+modifiedDate.getMinutes()).slice(-2);
+    document.getElementById("modified").innerHTML = modifiedDate.getDate() + ".&nbsp;" + (modifiedDate.getMonth() + 1) + ".&nbsp;" + modifiedDate.getFullYear() + "&nbsp;" + ("0" + modifiedDate.getHours()).slice(-2) + ":" + ("0" + modifiedDate.getMinutes()).slice(-2);
 
     drawBarvyKraju();
     startAnimation();
@@ -277,13 +368,13 @@ function loadStaticData(jsonString) {
     var json = JSON.parse(jsonString);
     kraje = json.kraje;
     okresy = json.okresy;
-    pocetObyvatelCR = json.populace;
+    republika = json.republika;
 
     kraje.forEach(function (kraj, index) {
         nutsToIdMap[kraj.nutsKod] = index;
     });
 
-    // Nacteme staticka data z JSON souboru na hostingu
+    // Nacteme dynamicka data z JSON souboru na strankach MZCR
     fetch('https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani.json')
         .then(response => response.text())
         .then(data => loadDynamicData(data));

@@ -14,17 +14,26 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="js/jquery.csv.min.js"></script>
     <link rel="stylesheet" href="css/main.css">
+    <link href="css/fontawesome-free-5.15.3-web/css/all.css" rel="stylesheet">
 </head>
 
 <body>
     <nav style="background-color: #b9b9b9;">
-        <div class="container" >
-            <p class="text-center"><small>Verze: 0.0.1, vývoj: <a href = "mailto:peta.suchy@gmail.com">Petr Suchý</a>, data o krajích: <a href="https://vdp.cuzk.cz/vdp/ruian/vusc/vyhledej?rs.kod=&vc.nazev=&vc.kod=&ohrada.id=&vcg.sort=NAZEV&search=Vyhledat">ČÚZK Ruian</a>, data o populaci: <a href="https://www.czso.cz/csu/czso/obyvatelstvo-podle-petiletych-vekovych-skupin-a-pohlavi-v-krajich-a-okresech">ČSÚ</a> (platné k 31.12.2019), aktuální data o očkování: <a href="https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani.json">Otevřená data ministerstva zdravotnictní ČR</a> (poslední změna: <span id="modified"></span>)</small></p>
+        <div class="container">
+            <p class="text-center"><small>Verze: <a
+                        href="https://github.com/petasuchy/vizualizace/releases/tag/v0.0.1-beta">0.0.1</a>, vývoj: <a
+                        href="mailto:peta.suchy@gmail.com">Petr Suchý</a>, data o krajích: <a
+                        href="https://vdp.cuzk.cz/vdp/ruian/vusc/vyhledej?rs.kod=&vc.nazev=&vc.kod=&ohrada.id=&vcg.sort=NAZEV&search=Vyhledat">ČÚZK
+                        Ruian</a>, data o populaci: <a
+                        href="https://www.czso.cz/csu/czso/obyvatelstvo-podle-petiletych-vekovych-skupin-a-pohlavi-v-krajich-a-okresech">ČSÚ</a>
+                    (platné k 31.12.2019), aktuální data o očkování: <a
+                        href="https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/ockovani.json">Otevřená data
+                        ministerstva zdravotnictní ČR</a> (poslední změna: <span id="modified"></span>)</small></p>
         </div>
     </nav>
     <div class="container">
-        <div class="row">
-            <div class="col-sm-8" id="levyPanel">
+        <div class="row row-height">
+            <div class="col-sm-8 left" id="levyPanel">
                 <h1 class="text-center">Postup očkování v krajích</h1>
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                     y="0px" class="czech-map__svg" id="mapa" viewBox="0 0 300 180" xml:space="preserve">
@@ -303,14 +312,528 @@
                             id="dateInput" onchange="inputChanged('datepicker')">
                     </div>
                 </div>
-                <div>
-                    <p id=legenda>
-                    </p>
+                <div id="republika">
+                    <div class="card">
+                        <h4 class="card-header">Průběh očkování v ČR</h4>
+                        <div class="card-body">
+                            <h6 class="card-title" id="republika-jmenoKraje"></h6>
+                            <p class="card-text" id="republika-infoOKraji"></p>
+                        </div>
+                    
+                        <p>
+                            <button class="accordion-button" type="button" id="republika-celkemDavekButton"
+                                data-bs-toggle="collapse" data-bs-target="#republika-celkemDavek" aria-expanded="false"
+                                aria-controls="republika-celkemDavek">
+                                <!-- placeholder, sem se vlozi hodnota pomoci javascriptu -->
+                            </button>
+                        </p>
+                        <div class="collapse show" id="republika-celkemDavek">
+                            <div class="card card-body">
+                                <p>
+                                    <button class="accordion-button collapsed" type="button"
+                                        id="republika-celkemPrvnichDavekButton" data-bs-toggle="collapse"
+                                        data-bs-target="#republika-celkemPrvnichDavek" aria-expanded="false"
+                                        aria-controls="republika-celkemPrvnichDavek">
+                                        <!-- placeholder -->
+                                    </button>
+                                </p>
+                                <div class="collapse" id="republika-celkemPrvnichDavek">
+                                    <div class="card card-body" id="republika-celkemPrvnichDavekText">
+                                        <!-- placeholder -->
+                                    </div>
+                                </div>
+                                <p>
+                                    <button class="accordion-button collapsed" type="button"
+                                        id="republika-celkemDruhychDavekButton" data-bs-toggle="collapse"
+                                        data-bs-target="#republika-celkemDruhychDavek" aria-expanded="false"
+                                        aria-controls="republika-celkemDruhychDavek">
+                                        <!-- placeholder -->
+                                    </button>
+                                </p>
+                                <div class="collapse" id="republika-celkemDruhychDavek">
+                                    <div class="card card-body" id="republika-celkemDruhychDavekText">
+                                        <!-- placeholder -->
+                                    </div>
+                                </div>
+                                <p>
+                                    <button class="accordion-button collapsed" type="button"
+                                        id="republika-rozdeleniPodleVakcinButton" data-bs-toggle="collapse"
+                                        data-bs-target="#republika-rozdeleniPodleVakcin" aria-expanded="false"
+                                        aria-controls="republika-rozdeleniPodleVakcin">
+                                        Rozdělení podle druhu vakcíny
+                                    </button>
+                                </p>
+                                <div class="collapse" id="republika-rozdeleniPodleVakcin">
+                                    <div class="card card-body" id="republika-rozdeleniPodleVakcinBody">
+                                        <ul>
+                                            <div id="republika-rozdeleniPodleVakcinList">
+                    
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <p>
+                                    <button class="accordion-button collapsed" type="button"
+                                        id="republika-rozdeleniPodleVekuButton" data-bs-toggle="collapse"
+                                        data-bs-target="#republika-rozdeleniPodleVeku" aria-expanded="false"
+                                        aria-controls="republika-rozdeleniPodleVeku">
+                                        Rozdělení podle věkových skupin
+                                    </button>
+                                </p>
+                                <div class="collapse" id="republika-rozdeleniPodleVeku">
+                                    <div class="card card-body" id="republika-rozdeleniPodleVekuBody">
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku0-17Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku0-17" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku0-17">
+                                                <b>0-17 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku0-17Title"></span>&nbsp;<i class="fas fa-question-circle"
+                                                    title="Procenta jsou zde nepřesná, jelikož známe jen počty lidí ve skupinách 0-4 roky, 5-9 let, 10-14 let, 15-19 let, 20-24 let atd.&#10;Lidé ze skupiny 15-19 let jsou tedy rozděleni mezi očkovací skupiny '0-17 let' a '18-24 let' v poměru 3:2"></i>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku0-17">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku0-17Body">
+                                                Inside 0-17
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku18-24Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku18-24" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku18-24">
+                                                <b>18-24 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku18-24Title"></span>&nbsp;<i class="fas fa-question-circle"
+                                                    title="Procenta jsou zde nepřesná, jelikož známe jen počty lidí ve skupinách 0-4 roky, 5-9 let, 10-14 let, 15-19 let, 20-24 let atd.&#10;Lidé ze skupiny 15-19 let jsou tedy rozděleni mezi očkovací skupiny '0-17 let' a '18-24 let' v poměru 3:2"></i>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku18-24">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku18-24Body">
+                                                Inside 18-24
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku25-29Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku25-29" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku25-29">
+                                                <b>25-29 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku25-29Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku25-29">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku25-29Body">
+                                                Inside 25-29
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku30-34Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku30-34" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku30-34">
+                                                <b>30-34 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku30-34Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku30-34">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku30-34Body">
+                                                Inside 30-34
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku35-39Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku35-39" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku35-39">
+                                                <b>35-39 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku35-39Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku35-39">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku35-39Body">
+                                                Inside 35-39
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku40-44Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku40-44" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku40-44">
+                                                <b>40-44 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku40-44Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku40-44">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku40-44Body">
+                                                Inside 40-44
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku45-49Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku45-49" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku45-49">
+                                                <b>45-49 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku45-49Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku45-49">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku45-49Body">
+                                                Inside 45-49
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku50-54Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku50-54" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku50-54">
+                                                <b>50-54 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku50-54Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku50-54">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku50-54Body">
+                                                Inside 50-54
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku55-59Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku55-59" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku55-59">
+                                                <b>55-59 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku55-59Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku55-59">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku55-59Body">
+                                                Inside 55-59
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku60-64Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku60-64" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku60-64">
+                                                <b>60-64 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku60-64Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku60-64">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku60-64Body">
+                                                Inside 60-64
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku65-69Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku65-69" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku65-69">
+                                                <b>65-69 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku65-69Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku65-69">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku65-69Body">
+                                                Inside 65-69
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku70-74Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku70-74" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku70-74">
+                                                <b>70-74 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku70-74Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku70-74">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku70-74Body">
+                                                Inside 70-74
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku75-79Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku75-79" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku75-79">
+                                                <b>75-79 let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku75-79Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku75-79">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku75-79Body">
+                                                Inside 75-79
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <button class="accordion-button collapsed" type="button"
+                                                id="republika-rozdeleniPodleVeku80Button" data-bs-toggle="collapse"
+                                                data-bs-target="#republika-rozdeleniPodleVeku80" aria-expanded="false"
+                                                aria-controls="republika-rozdeleniPodleVeku80">
+                                                <b>80+ let:</b>&nbsp;<span id="republika-rozdeleniPodleVeku80Title"></span>
+                                            </button>
+                                        </p>
+                                        <div class="collapse" id="republika-rozdeleniPodleVeku80">
+                                            <div class="card card-body" id="republika-rozdeleniPodleVeku80Body">
+                                                Inside 80+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm" id="popis">
-                <!-- <h3>Popis</h3>
-                <p id="popis"></p> -->
+            <div class="col-sm right" id="detail" style="display: none;">
+                <div class="card">
+                    <h4 class="card-header">Detail očkování v kraji</h4>
+                    <div class="card-body">
+                        <h6 class="card-title" id="detail-jmenoKraje"></h6>
+                        <p class="card-text" id="detail-infoOKraji"></p>
+                    </div>
+
+                    <p>
+                        <button class="accordion-button" type="button" id="detail-celkemDavekButton"
+                            data-bs-toggle="collapse" data-bs-target="#detail-celkemDavek" aria-expanded="false"
+                            aria-controls="detail-celkemDavek">
+                            <!-- placeholder, sem se vlozi hodnota pomoci javascriptu -->
+                        </button>
+                    </p>
+                    <div class="collapse show" id="detail-celkemDavek">
+                        <div class="card card-body">
+                            <p>
+                                <button class="accordion-button collapsed" type="button"
+                                    id="detail-celkemPrvnichDavekButton" data-bs-toggle="collapse"
+                                    data-bs-target="#detail-celkemPrvnichDavek" aria-expanded="false"
+                                    aria-controls="detail-celkemPrvnichDavek">
+                                    <!-- placeholder -->
+                                </button>
+                            </p>
+                            <div class="collapse" id="detail-celkemPrvnichDavek">
+                                <div class="card card-body" id="detail-celkemPrvnichDavekText">
+                                    <!-- placeholder -->
+                                </div>
+                            </div>
+                            <p>
+                                <button class="accordion-button collapsed" type="button"
+                                    id="detail-celkemDruhychDavekButton" data-bs-toggle="collapse"
+                                    data-bs-target="#detail-celkemDruhychDavek" aria-expanded="false"
+                                    aria-controls="detail-celkemDruhychDavek">
+                                    <!-- placeholder -->
+                                </button>
+                            </p>
+                            <div class="collapse" id="detail-celkemDruhychDavek">
+                                <div class="card card-body" id="detail-celkemDruhychDavekText">
+                                    <!-- placeholder -->
+                                </div>
+                            </div>
+                            <p>
+                                <button class="accordion-button collapsed" type="button"
+                                    id="detail-rozdeleniPodleVakcinButton" data-bs-toggle="collapse"
+                                    data-bs-target="#detail-rozdeleniPodleVakcin" aria-expanded="false"
+                                    aria-controls="detail-rozdeleniPodleVakcin">
+                                    Rozdělení podle druhu vakcíny
+                                </button>
+                            </p>
+                            <div class="collapse" id="detail-rozdeleniPodleVakcin">
+                                <div class="card card-body" id="detail-rozdeleniPodleVakcinBody">
+                                    <ul>
+                                        <div id="detail-rozdeleniPodleVakcinList">
+
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <p>
+                                <button class="accordion-button collapsed" type="button"
+                                    id="detail-rozdeleniPodleVekuButton" data-bs-toggle="collapse"
+                                    data-bs-target="#detail-rozdeleniPodleVeku" aria-expanded="false"
+                                    aria-controls="detail-rozdeleniPodleVeku">
+                                    Rozdělení podle věkových skupin
+                                </button>
+                            </p>
+                            <div class="collapse" id="detail-rozdeleniPodleVeku">
+                                <div class="card card-body" id="detail-rozdeleniPodleVekuBody">
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku0-17Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku0-17" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku0-17">
+                                            <b>0-17 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku0-17Title"></span>&nbsp;<i class="fas fa-question-circle"
+                                                title="Procenta jsou zde nepřesná, jelikož známe jen počty lidí ve skupinách 0-4 roky, 5-9 let, 10-14 let, 15-19 let, 20-24 let atd.&#10;Lidé ze skupiny 15-19 let jsou tedy rozděleni mezi očkovací skupiny '0-17 let' a '18-24 let' v poměru 3:2"></i>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku0-17">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku0-17Body">
+                                            Inside 0-17
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku18-24Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku18-24" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku18-24">
+                                            <b>18-24 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku18-24Title"></span>&nbsp;<i class="fas fa-question-circle"
+                                                title="Procenta jsou zde nepřesná, jelikož známe jen počty lidí ve skupinách 0-4 roky, 5-9 let, 10-14 let, 15-19 let, 20-24 let atd.&#10;Lidé ze skupiny 15-19 let jsou tedy rozděleni mezi očkovací skupiny '0-17 let' a '18-24 let' v poměru 3:2"></i>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku18-24">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku18-24Body">
+                                            Inside 18-24
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku25-29Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku25-29" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku25-29">
+                                            <b>25-29 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku25-29Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku25-29">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku25-29Body">
+                                            Inside 25-29
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku30-34Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku30-34" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku30-34">
+                                            <b>30-34 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku30-34Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku30-34">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku30-34Body">
+                                            Inside 30-34
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku35-39Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku35-39" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku35-39">
+                                            <b>35-39 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku35-39Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku35-39">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku35-39Body">
+                                            Inside 35-39
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku40-44Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku40-44" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku40-44">
+                                            <b>40-44 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku40-44Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku40-44">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku40-44Body">
+                                            Inside 40-44
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku45-49Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku45-49" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku45-49">
+                                            <b>45-49 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku45-49Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku45-49">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku45-49Body">
+                                            Inside 45-49
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku50-54Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku50-54" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku50-54">
+                                            <b>50-54 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku50-54Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku50-54">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku50-54Body">
+                                            Inside 50-54
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku55-59Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku55-59" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku55-59">
+                                            <b>55-59 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku55-59Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku55-59">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku55-59Body">
+                                            Inside 55-59
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku60-64Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku60-64" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku60-64">
+                                            <b>60-64 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku60-64Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku60-64">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku60-64Body">
+                                            Inside 60-64
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku65-69Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku65-69" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku65-69">
+                                            <b>65-69 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku65-69Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku65-69">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku65-69Body">
+                                            Inside 65-69
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku70-74Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku70-74" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku70-74">
+                                            <b>70-74 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku70-74Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku70-74">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku70-74Body">
+                                            Inside 70-74
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku75-79Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku75-79" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku75-79">
+                                            <b>75-79 let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku75-79Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku75-79">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku75-79Body">
+                                            Inside 75-79
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <button class="accordion-button collapsed" type="button"
+                                            id="detail-rozdeleniPodleVeku80Button" data-bs-toggle="collapse"
+                                            data-bs-target="#detail-rozdeleniPodleVeku80" aria-expanded="false"
+                                            aria-controls="detail-rozdeleniPodleVeku80">
+                                            <b>80+ let:</b>&nbsp;<span id="detail-rozdeleniPodleVeku80Title"></span>
+                                        </button>
+                                    </p>
+                                    <div class="collapse" id="detail-rozdeleniPodleVeku80">
+                                        <div class="card card-body" id="detail-rozdeleniPodleVeku80Body">
+                                            Inside 80+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
