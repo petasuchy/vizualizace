@@ -62,12 +62,12 @@ function prepareDayObjectRepublika(idDne) {
 
 /**
  * spocte pocet dnu mezi dvema daty
- * @param {Date} date1 prvni datum 
- * @param {Date} date2 druhe datum
+ * @param {Date} dt1 prvni datum 
+ * @param {Date} dt2 druhe datum
  * @returns {number} rozdil ve dnech
  */
-function countDaysBetweenDates(date1, date2) {
-    var diff = Math.abs(date2.getTime() - date1.getTime()) / (1000 * 3600 * 24);
+function countDaysBetweenDates(dt1, dt2) {
+    var diff = Math.abs(Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24)));
     return diff;
 }
 
@@ -137,8 +137,8 @@ function prepareSums() {
         prvniDavka: 0,
         druhaDavka: 0,
         vakcina: [
-            { nazev: "Comirnaty", suma: 0, prvniDavka: 0, druhaDavka: 0 },
-            { nazev: "AstraZeneca", suma: 0, prvniDavka: 0, druhaDavka: 0 },
+            { nazev: "Comirnaty (Pfizer)", suma: 0, prvniDavka: 0, druhaDavka: 0 },
+            { nazev: "VAXZEVRIA (AstraZeneca)", suma: 0, prvniDavka: 0, druhaDavka: 0 },
             { nazev: "Moderna", suma: 0, prvniDavka: 0, druhaDavka: 0 }
         ],
         vekova_skupina: [
@@ -168,8 +168,8 @@ function prepareSums() {
             prvniDavka: 0,
             druhaDavka: 0,
             vakcina: [
-                { nazev: "Comirnaty", suma: 0, prvniDavka: 0, druhaDavka: 0 },
-                { nazev: "AstraZeneca", suma: 0, prvniDavka: 0, druhaDavka: 0 },
+                { nazev: "Comirnaty (Pfizer)", suma: 0, prvniDavka: 0, druhaDavka: 0 },
+                { nazev: "VAXZEVRIA (AstraZeneca)", suma: 0, prvniDavka: 0, druhaDavka: 0 },
                 { nazev: "Moderna", suma: 0, prvniDavka: 0, druhaDavka: 0 }
             ],
             vekova_skupina: [
@@ -198,7 +198,7 @@ function prepareSums() {
             case "Comirnaty":
                 indexVakciny = 0;
                 break;
-            case "COVID-19 Vaccine AstraZeneca":
+            case "VAXZEVRIA":
                 indexVakciny = 1;
                 break;
             case "COVID-19 Vaccine Moderna":
@@ -326,6 +326,7 @@ function prepareSums() {
     kraje.forEach(function(kraj, idKraje){
         if (typeof kraj.prubeznaSuma[lastVaccineDateIndex] === 'undefined') {
             prepareDayObject(idKraje, lastVaccineDateIndex);
+            console.log("Chybi soucet pro kraj "+kraj.nazev);
         }
     });
 
@@ -340,6 +341,7 @@ function initializeView() {
     var modifiedDate = new Date(dataModified)
     document.getElementById("modified").innerHTML = modifiedDate.getDate() + ".&nbsp;" + (modifiedDate.getMonth() + 1) + ".&nbsp;" + modifiedDate.getFullYear() + "&nbsp;" + ("0" + modifiedDate.getHours()).slice(-2) + ":" + ("0" + modifiedDate.getMinutes()).slice(-2);
 
+    // console.log(kraje);
     drawBarvyKraju();
     startAnimation();
 }
