@@ -326,7 +326,7 @@ function prepareSums() {
     kraje.forEach(function(kraj, idKraje){
         if (typeof kraj.prubeznaSuma[lastVaccineDateIndex] === 'undefined') {
             prepareDayObject(idKraje, lastVaccineDateIndex);
-            console.log("Chybi soucet pro kraj "+kraj.nazev);
+            console.log("Chybi soucet pro kraj "+kraj.jmeno);
         }
     });
 

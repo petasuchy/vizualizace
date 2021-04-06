@@ -283,8 +283,8 @@ function inputChanged(source) {
 }
 
 function animateData() {
-    // drawBarvyKraju();
-    if (toDate >= lastVaccineDate) {
+    // zkontrolujeme, jestli jsou zobrazena data z posledniho dne ockovani a pripadne se vratime na zacatek
+    if (toDate.getFullYear() >= lastVaccineDate.getFullYear() && toDate.getMonth() >= lastVaccineDate.getMonth() && toDate.getDate() >= lastVaccineDate.getDate()) {
         toDate = new Date(dateEpochString);
     } else {
         var oDen = new Date(toDate.getTime());
