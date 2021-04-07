@@ -32,7 +32,6 @@ function prepareDayObject(idKraje, idDne) {
             prepareDayObject(idKraje, idDne - 1);
         }
         // zkopirovat
-        // kraje[idKraje].prubeznaSuma[idDne] = Object.assign({}, kraje[idKraje].prubeznaSuma[idDne - 1]);
         kraje[idKraje].prubeznaSuma[idDne] = JSON.parse(JSON.stringify(kraje[idKraje].prubeznaSuma[idDne - 1]));
         var datumZaznamu = new Date(dateEpoch.getTime());
         datumZaznamu.setDate(27 + idDne);
@@ -50,7 +49,6 @@ function prepareDayObjectRepublika(idDne) {
             prepareDayObjectRepublika(idDne - 1);
         }
         // zkopirovat
-        // kraje[idKraje].prubeznaSuma[idDne] = Object.assign({}, kraje[idKraje].prubeznaSuma[idDne - 1]);
         republika.prubeznaSuma[idDne] = JSON.parse(JSON.stringify(republika.prubeznaSuma[idDne - 1]));
         var datumZaznamu = new Date(dateEpoch.getTime());
         datumZaznamu.setDate(27 + idDne);
@@ -87,7 +85,6 @@ function attachListeners() {
 
     kraje.forEach(function (item) {
         document.getElementById(item.id).addEventListener('mouseenter', function (e) {
-            // document.getElementById(item.id).style.fill="#ff00cc";
             document.getElementById(item.id).style["fill-opacity"] = 1;
             if (!krajSelected.status) {
                 drawInfo(item);
@@ -207,7 +204,6 @@ function prepareSums() {
             default:
                 indexVakciny = -1;
                 problemoveOckovani += zaznam.celkem_davek;
-            // console.log("Problemove ockovani: Neznama vakcina (" + zaznam.vakcina + ")");
         }
         var indexSkupiny;
         switch (zaznam.vekova_skupina) {
@@ -256,13 +252,11 @@ function prepareSums() {
             default:
                 indexSkupiny = -1;
                 problemoveOckovani += zaznam.celkem_davek;
-            //console.log("Problemove ockovani: Neznama vekova skupina (" + zaznam.vekova_skupina + ")");
         }
 
         // zkontrolujeme, jestli ockovani dokazeme priradit ke kraji
         var krajExists;
         if (zaznam.kraj_nuts_kod == "") {
-            // console.log("Problemove ockovani: Neznamy kraj");
             problemoveOckovani += zaznam.celkem_davek;
             krajExists = false;
         } else {
@@ -329,9 +323,6 @@ function prepareSums() {
             console.log("Chybi soucet pro kraj "+kraj.jmeno);
         }
     });
-
-    //console.log(problemoveOckovani)
-    //console.log(republika);
 }
 
 function initializeView() {
@@ -341,7 +332,6 @@ function initializeView() {
     var modifiedDate = new Date(dataModified)
     document.getElementById("modified").innerHTML = modifiedDate.getDate() + ".&nbsp;" + (modifiedDate.getMonth() + 1) + ".&nbsp;" + modifiedDate.getFullYear() + "&nbsp;" + ("0" + modifiedDate.getHours()).slice(-2) + ":" + ("0" + modifiedDate.getMinutes()).slice(-2);
 
-    // console.log(kraje);
     drawBarvyKraju();
     startAnimation();
 }

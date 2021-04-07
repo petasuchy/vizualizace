@@ -8,7 +8,6 @@ function printPrettyNumber(inputNumber) {
     var i;
     var output = "";
 
-    // console.log("Input: "+inp);
     for (i = inp.length; i >= 0; i -= 3) {
         var tmp = output;
         if (i - 3 < 0) {
@@ -16,7 +15,6 @@ function printPrettyNumber(inputNumber) {
         } else {
             output = " " + inp.slice(i - 3, i) + tmp;
         }
-        // console.log(inp.slice(i-3,i));
     }
     return output;
 }
@@ -31,7 +29,6 @@ function drawPlayButton() {
 
 function drawInfo(kraj, prefix = "detail") {
     // make sure its visible
-    // console.log(kraj);
     var x = document.getElementById(prefix);
     if (x.style.display === "none") {
         x.style.display = "";
@@ -177,14 +174,6 @@ function drawBarvyKraju() {
     var averageKrajColor = "fccf03";
     var bestKrajColor = "419600";
     var celorepublikoveNaockovano = republika.prubeznaSuma[dateIndex].celkem / republika.pocetObyvatel;
-    // console.log(celkemOckovani+" ("+celorepublikoveNaockovano*100+" %), nejl: "+nejlepsiKraj+", nejh: "+nejhorsiKraj);
-
-    // vyplnime legendu pod mapou vztahujici se na celou republiku
-    // var legendaHTML = "<h5>K datu " + datum.getDate() + ". " + (datum.getMonth() + 1) + ". " + datum.getFullYear() + ":</h5>";
-    // legendaHTML += "<ul><li>Vyočkováno celkem: " + printPrettyNumber(republika.prubeznaSuma[dateIndex].celkem) + " dávek (" + Math.round(1000 * republika.prubeznaSuma[dateIndex].celkem / republika.pocetObyvatel) / 1000 + " dávky na osobu)<ul>";
-    // legendaHTML += "<li>1. dávkou naočkováno: " + printPrettyNumber(republika.prubeznaSuma[dateIndex].prvniDavka) + " (" + Math.round(10000 * republika.prubeznaSuma[dateIndex].prvniDavka / republika.pocetObyvatel) / 100 + "% populace)</li>";
-    // legendaHTML += "<li>2. dávkou naočkováno: " + printPrettyNumber(republika.prubeznaSuma[dateIndex].druhaDavka) + " (" + Math.round(10000 * republika.prubeznaSuma[dateIndex].druhaDavka / republika.pocetObyvatel) / 100 + "% populace)</li></ul></li></ul>";
-    // document.getElementById("legenda").innerHTML = legendaHTML;
 
     // nakreslime stupnici barev
     var c = document.getElementById("legendCanvas");
@@ -225,13 +214,11 @@ function drawBarvyKraju() {
         }
         if (proockovanyPodil <= celorepublikoveNaockovano && proockovanyPodil > 0) {
             // podprumerne ockovani
-            kraj.barva = mixColors(averageKrajColor, worstKrajColor, Math.round(100 * (proockovanyPodil - nejhorsiKraj) / (celorepublikoveNaockovano - nejhorsiKraj)));
-            // console.log("["+kraj.jmeno+"] "+proockovanyPodil*100+" % (podprumer) - barva: "+kraj.barva);         
+            kraj.barva = mixColors(averageKrajColor, worstKrajColor, Math.round(100 * (proockovanyPodil - nejhorsiKraj) / (celorepublikoveNaockovano - nejhorsiKraj)));        
         }
         if (proockovanyPodil > celorepublikoveNaockovano) {
             // nadprumerne ockovani
-            kraj.barva = mixColors(bestKrajColor, averageKrajColor, Math.round(100 * (proockovanyPodil - celorepublikoveNaockovano) / (nejlepsiKraj - celorepublikoveNaockovano)));
-            // console.log("["+kraj.jmeno+"] "+proockovanyPodil*100+" % (nadprumer) - barva: "+kraj.barva);        
+            kraj.barva = mixColors(bestKrajColor, averageKrajColor, Math.round(100 * (proockovanyPodil - celorepublikoveNaockovano) / (nejlepsiKraj - celorepublikoveNaockovano)));       
         }
         document.getElementById(kraj.id).style.fill = kraj.barva;
     });
@@ -254,7 +241,6 @@ function inputChanged(source) {
     }
     switch (source) {
         case "timeline":
-            // console.log("Zmena, z timeline");
             var dayDiff = parseInt(document.getElementById("timeline").value);
             var aktualniDatum = new Date(dateEpoch.getTime());
             aktualniDatum.setDate(27 + dayDiff);
@@ -262,7 +248,6 @@ function inputChanged(source) {
             updateDatePicker();
             break;
         case "datepicker":
-            // console.log("Zmena, z datepickeru");
             console.log(document.getElementById("dateInput").value);
             toDate = new Date(document.getElementById("dateInput").value);
             console.log(toDate);
