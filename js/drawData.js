@@ -2,7 +2,7 @@
  * prida mezeru za kazdou treti cislici, aby sli lepe rozlisit tisice, miliony atd.
  * @param {string} inputNumber - cislo, do ktereho maji byt pridany mezery
  */
-function printPrettyNumber(inputNumber) {
+function printPrettyNumber(inputNumber, nbsp = false) {
     if (inputNumber < 1000) return inputNumber + "";
     var inp = "" + inputNumber;
     var i;
@@ -11,11 +11,43 @@ function printPrettyNumber(inputNumber) {
     for (i = inp.length; i >= 0; i -= 3) {
         var tmp = output;
         if (i - 3 < 0) {
-            output = " " + inp.slice(0, i) + tmp;
+            output = inp.slice(0, i) + tmp;
         } else {
-            output = " " + inp.slice(i - 3, i) + tmp;
+            output = (nbsp ? "&nbsp;" : " ") + inp.slice(i - 3, i) + tmp;
         }
     }
+    return output;
+}
+
+function printIncrement(today, yesterday, verbose = false) {
+    var cislo = printPrettyNumber(today, true);
+    var prubehPrirustku = today - yesterday;
+
+    var output;
+    var color;
+    var arrowUNC;
+    var arrowIcon;
+
+    if (prubehPrirustku < 0) {
+        color = "red";
+        arrowUNC = "&#11018;";
+        arrowIcon = "bi bi-arrow-down-right";
+    } else if (prubehPrirustku > 0) {
+        color = "green";
+        arrowUNC = "&#11016;";
+        arrowIcon = "bi bi-arrow-up-right";
+    } else {
+        color = "";
+        arrowUNC = "&#129042;";
+        arrowIcon = "bi bi-arrow-right";
+    }
+
+    if (verbose){
+        output = "<span style=\"color:" + color + ";\"><i class=\""+arrowIcon+"\"></i>+" + cislo + "</span>";
+    }else{
+        output = arrowUNC+"+"+cislo;
+    }
+
     return output;
 }
 
@@ -27,7 +59,7 @@ function drawPlayButton() {
     document.getElementById("animationToggle").innerHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" onclick=\"startAnimation()\"><i class=\"fas fa-play\"></i></button>";
 }
 
-function drawInfo(kraj, prefix = "detail") {
+function drawInfo(kraj, prefix = "detail", verbose = false) {
     // make sure its visible
     var x = document.getElementById(prefix);
     if (x.style.display === "none") {
@@ -39,29 +71,29 @@ function drawInfo(kraj, prefix = "detail") {
 
     // info o kraji
     document.getElementById(prefix + "-jmenoKraje").innerText = kraj.jmeno;
-    document.getElementById(prefix + "-infoOKraji").innerHTML = printPrettyNumber(kraj.pocetObyvatel) + " obyvatel [" + Math.round(10000 * kraj.pocetObyvatel / republika.pocetObyvatel) / 100 + "% populace ČR]<br><b>K datu " + date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear() + ":</b>";
+    document.getElementById(prefix + "-infoOKraji").innerHTML = printPrettyNumber(kraj.pocetObyvatel, true) + " obyvatel [" + Math.round(10000 * kraj.pocetObyvatel / republika.pocetObyvatel) / 100 + "% populace ČR]<br><b>K datu " + date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear() + ":</b>";
 
     // celkove vyockovano / rozdeleni podle davek
-    document.getElementById(prefix + "-celkemDavekButton").innerText = "Vyočkováno celkem: " + printPrettyNumber(kraj.prubeznaSuma[dateIndex].celkem) + " dávek (" + Math.round(1000 * kraj.prubeznaSuma[dateIndex].celkem / kraj.pocetObyvatel) / 1000 + " dávky/os)";
-    document.getElementById(prefix + "-celkemPrvnichDavekButton").innerText = "1. dávkou: " + printPrettyNumber(kraj.prubeznaSuma[dateIndex].prvniDavka) + " (" + Math.round(10000 * kraj.prubeznaSuma[dateIndex].prvniDavka / kraj.pocetObyvatel) / 100 + "% obyvatel)";
-    document.getElementById(prefix + "-celkemDruhychDavekButton").innerText = "2. dávkou: " + printPrettyNumber(kraj.prubeznaSuma[dateIndex].druhaDavka) + " (" + Math.round(10000 * kraj.prubeznaSuma[dateIndex].druhaDavka / kraj.pocetObyvatel) / 100 + "% obyvatel)";
+    document.getElementById(prefix + "-celkemDavekButton").innerHTML = "Vyočkováno celkem: " + printPrettyNumber(kraj.prubeznaSuma[dateIndex].celkem, true) + "&nbsp;dávek (" + Math.round(1000 * kraj.prubeznaSuma[dateIndex].celkem / kraj.pocetObyvatel) / 1000 + "&nbsp;dávky/" + (verbose ? "osobu" : "os") + ") [" + printIncrement(kraj.prubeznaSuma[dateIndex].celkemPrirustek, (dateIndex < 1 ? 0 : kraj.prubeznaSuma[dateIndex - 1].celkemPrirustek), verbose) + "]";
+    document.getElementById(prefix + "-celkemPrvnichDavekButton").innerHTML = "1. dávkou: " + printPrettyNumber(kraj.prubeznaSuma[dateIndex].prvniDavka, true) + " (" + Math.round(10000 * kraj.prubeznaSuma[dateIndex].prvniDavka / kraj.pocetObyvatel) / 100 + "%&nbsp;"+(verbose ? "obyvatel" : "obyv")+") [" + printIncrement(kraj.prubeznaSuma[dateIndex].prvniDavkaPrirustek, (dateIndex < 1 ? 0 : kraj.prubeznaSuma[dateIndex - 1].prvniDavkaPrirustek), verbose) + "]";
+    document.getElementById(prefix + "-celkemDruhychDavekButton").innerHTML = "2. dávkou: " + printPrettyNumber(kraj.prubeznaSuma[dateIndex].druhaDavka, true) + " (" + Math.round(10000 * kraj.prubeznaSuma[dateIndex].druhaDavka / kraj.pocetObyvatel) / 100 + "%&nbsp;"+(verbose ? "obyvatel" : "obyv")+") [" + printIncrement(kraj.prubeznaSuma[dateIndex].druhaDavkaPrirustek, (dateIndex < 1 ? 0 : kraj.prubeznaSuma[dateIndex - 1].druhaDavkaPrirustek), verbose) + "]";
 
     var prvniDavkaBody = "<ul>"
     kraj.prubeznaSuma[dateIndex].vakcina.forEach(function (vakcina) {
         prvniDavkaBody += "<li>" + vakcina.nazev + ": " + printPrettyNumber(vakcina.prvniDavka) + " ";
         if (kraj.prubeznaSuma[dateIndex].prvniDavka < 1) {
-            prvniDavkaBody += "(0% vakcín)</li>";
+            prvniDavkaBody += "(0%$nbsp;vakcín)</li>";
         } else {
-            prvniDavkaBody += "(" + Math.round(10000 * vakcina.prvniDavka / kraj.prubeznaSuma[dateIndex].prvniDavka) / 100 + "% vakcín)</li>";
+            prvniDavkaBody += "(" + Math.round(10000 * vakcina.prvniDavka / kraj.prubeznaSuma[dateIndex].prvniDavka) / 100 + "%&nbsp;vakcín)</li>";
         }
     });
     var druhaDavkaBody = "<ul>"
     kraj.prubeznaSuma[dateIndex].vakcina.forEach(function (vakcina) {
         druhaDavkaBody += "<li>" + vakcina.nazev + ": " + printPrettyNumber(vakcina.druhaDavka) + " ";
         if (kraj.prubeznaSuma[dateIndex].druhaDavka < 1) {
-            druhaDavkaBody += "(0% vakcín)</li>";
+            druhaDavkaBody += "(0%&nbsp;vakcín)</li>";
         } else {
-            druhaDavkaBody += "(" + Math.round(10000 * vakcina.druhaDavka / kraj.prubeznaSuma[dateIndex].druhaDavka) / 100 + "% vakcín)</li>";
+            druhaDavkaBody += "(" + Math.round(10000 * vakcina.druhaDavka / kraj.prubeznaSuma[dateIndex].druhaDavka) / 100 + "%&nbsp;vakcín)</li>";
         }
     });
 
@@ -71,52 +103,52 @@ function drawInfo(kraj, prefix = "detail") {
     // rozdeleni podle druhu vakciny
     var rozdeleniPodleVakcinHtml = "";
     if (kraj.prubeznaSuma[dateIndex].celkem < 1) {
-        kraj.prubeznaSuma[dateIndex].vakcina.forEach(function(vakcina){
-            rozdeleniPodleVakcinHtml += "<li>"+vakcina.nazev + ": 0 (0% vakcín)</li>"
+        kraj.prubeznaSuma[dateIndex].vakcina.forEach(function (vakcina) {
+            rozdeleniPodleVakcinHtml += "<li>" + vakcina.nazev + ": 0 (0%nbsp;vakcín)</li>"
         });
     } else {
-        kraj.prubeznaSuma[dateIndex].vakcina.forEach(function(vakcina){
-            rozdeleniPodleVakcinHtml += "<li>"+vakcina.nazev + ": " + printPrettyNumber(vakcina.suma) + " (" + Math.round(10000 * vakcina.suma / kraj.prubeznaSuma[dateIndex].celkem) / 100 + "% vakcín)</li>"
+        kraj.prubeznaSuma[dateIndex].vakcina.forEach(function (vakcina) {
+            rozdeleniPodleVakcinHtml += "<li>" + vakcina.nazev + ": " + printPrettyNumber(vakcina.suma) + " (" + Math.round(10000 * vakcina.suma / kraj.prubeznaSuma[dateIndex].celkem) / 100 + "%&nbsp;vakcín)</li>"
         });
     }
-    document.getElementById(prefix+"-rozdeleniPodleVakcinList").innerHTML = rozdeleniPodleVakcinHtml;
+    document.getElementById(prefix + "-rozdeleniPodleVakcinList").innerHTML = rozdeleniPodleVakcinHtml;
 
     // rozdeleni podle vekovych skupin
-    kraj.prubeznaSuma[dateIndex].vekova_skupina.forEach(function (skupina) {
+    kraj.prubeznaSuma[dateIndex].vekova_skupina.forEach(function (skupina, idx) {
         var titleText = "";
         var bodyHtml = "<ul>";
         var pocetLidiVeSkupine = 1;
         // rucne odchytam specialni skupiny
         switch (skupina.nazev) {
             case "0-17":
-                pocetLidiVeSkupine = kraj.demografie["15-19"]*0.6+kraj.demografie["0-4"]+kraj.demografie["5-9"]+kraj.demografie["10-14"];
+                pocetLidiVeSkupine = kraj.demografie["15-19"] * 0.6 + kraj.demografie["0-4"] + kraj.demografie["5-9"] + kraj.demografie["10-14"];
                 break;
             case "18-24":
-                pocetLidiVeSkupine = kraj.demografie["15-19"]*0.4+kraj.demografie["20-24"];
+                pocetLidiVeSkupine = kraj.demografie["15-19"] * 0.4 + kraj.demografie["20-24"];
                 break;
             case "80":
-                pocetLidiVeSkupine = kraj.demografie["80-84"]+kraj.demografie["85-89"]+kraj.demografie["90-94"]+kraj.demografie["95+"];
+                pocetLidiVeSkupine = kraj.demografie["80-84"] + kraj.demografie["85-89"] + kraj.demografie["90-94"] + kraj.demografie["95+"];
                 break;
             default:
                 // ostatni vyresime vsechny stejne
                 pocetLidiVeSkupine = kraj.demografie[skupina.nazev];
         }
-        titleText = printPrettyNumber(skupina.celkem) +" ("+((skupina.nazev == "0-17" || skupina.nazev== "18-24")? "~":"") + Math.round(1000 * skupina.celkem / pocetLidiVeSkupine) / 1000 + " dávky/os)";
-        bodyHtml += "<li>1. dávka: "+printPrettyNumber(skupina.prvniDavka)+" ("+Math.round(10000 * skupina.prvniDavka / pocetLidiVeSkupine) / 100 + "% skupiny)</li>";
-        bodyHtml += "<li>2. dávka: "+printPrettyNumber(skupina.druhaDavka)+" ("+Math.round(10000 * skupina.druhaDavka / pocetLidiVeSkupine) / 100 + "% skupiny)</li>";
+        titleText = printPrettyNumber(skupina.celkem) + " (" + ((skupina.nazev == "0-17" || skupina.nazev == "18-24") ? "~" : "") + Math.round(1000 * skupina.celkem / pocetLidiVeSkupine) / 1000 + "&nbsp;dávky/" + (verbose ? "osobu" : "os") + ") [" + printIncrement(kraj.prubeznaSuma[dateIndex].vekova_skupina[idx].celkemPrirustek, (dateIndex < 1 ? 0 : kraj.prubeznaSuma[dateIndex-1].vekova_skupina[idx].celkemPrirustek), verbose) + "]";
+        bodyHtml += "<li>1. dávka: " + printPrettyNumber(skupina.prvniDavka) + " (" + Math.round(10000 * skupina.prvniDavka / pocetLidiVeSkupine) / 100 + "%&nbsp;skupiny) [" + printIncrement(kraj.prubeznaSuma[dateIndex].vekova_skupina[idx].prvniDavkaPrirustek, (dateIndex < 1 ? 0 : kraj.prubeznaSuma[dateIndex-1].vekova_skupina[idx].prvniDavkaPrirustek), verbose) + "]</li>";
+        bodyHtml += "<li>2. dávka: " + printPrettyNumber(skupina.druhaDavka) + " (" + Math.round(10000 * skupina.druhaDavka / pocetLidiVeSkupine) / 100 + "%&nbsp;skupiny) [" + printIncrement(kraj.prubeznaSuma[dateIndex].vekova_skupina[idx].druhaDavkaPrirustek, (dateIndex < 1 ? 0 : kraj.prubeznaSuma[dateIndex-1].vekova_skupina[idx].druhaDavkaPrirustek), verbose) + "]</li>";
         bodyHtml += "<li>Podíly očkovacích látek:<ul>";
-        kraj.prubeznaSuma[dateIndex].vakcina.forEach(function(vakcina, idx){
-            if (skupina.celkem <1){
-                bodyHtml+= "<li><b>"+vakcina.nazev+":</b> 0%</li>"
-            }else{
-                bodyHtml+= "<li><b>"+vakcina.nazev+":</b> "+Math.round(10000 * skupina.vakcina[idx] / skupina.celkem) / 100+"%</li>"
+        kraj.prubeznaSuma[dateIndex].vakcina.forEach(function (vakcina, idx) {
+            if (skupina.celkem < 1) {
+                bodyHtml += "<li><b>" + vakcina.nazev + ":</b> 0%</li>"
+            } else {
+                bodyHtml += "<li><b>" + vakcina.nazev + ":</b> " + Math.round(10000 * skupina.vakcina[idx] / skupina.celkem) / 100 + "%</li>"
             }
         });
-        bodyHtml+="</ul></li>";
+        bodyHtml += "</ul></li>";
 
-        bodyHtml +="</ul>";
-        document.getElementById(prefix+"-rozdeleniPodleVeku" + skupina.nazev + "Title").innerText = titleText;
-        document.getElementById(prefix+"-rozdeleniPodleVeku" + skupina.nazev + "Body").innerHTML = bodyHtml;        
+        bodyHtml += "</ul>";
+        document.getElementById(prefix + "-rozdeleniPodleVeku" + skupina.nazev + "Title").innerHTML = titleText;
+        document.getElementById(prefix + "-rozdeleniPodleVeku" + skupina.nazev + "Body").innerHTML = bodyHtml;
     });
 }
 
@@ -144,7 +176,7 @@ function mixColors(color_1, color_2, weight) {
 };
 
 function writeRepublikaStats() {
-    drawInfo(republika, "republika");
+    drawInfo(republika, "republika", true);
 }
 
 /**
@@ -214,11 +246,11 @@ function drawBarvyKraju() {
         }
         if (proockovanyPodil <= celorepublikoveNaockovano && proockovanyPodil > 0) {
             // podprumerne ockovani
-            kraj.barva = mixColors(averageKrajColor, worstKrajColor, Math.round(100 * (proockovanyPodil - nejhorsiKraj) / (celorepublikoveNaockovano - nejhorsiKraj)));        
+            kraj.barva = mixColors(averageKrajColor, worstKrajColor, Math.round(100 * (proockovanyPodil - nejhorsiKraj) / (celorepublikoveNaockovano - nejhorsiKraj)));
         }
         if (proockovanyPodil > celorepublikoveNaockovano) {
             // nadprumerne ockovani
-            kraj.barva = mixColors(bestKrajColor, averageKrajColor, Math.round(100 * (proockovanyPodil - celorepublikoveNaockovano) / (nejlepsiKraj - celorepublikoveNaockovano)));       
+            kraj.barva = mixColors(bestKrajColor, averageKrajColor, Math.round(100 * (proockovanyPodil - celorepublikoveNaockovano) / (nejlepsiKraj - celorepublikoveNaockovano)));
         }
         document.getElementById(kraj.id).style.fill = kraj.barva;
     });
@@ -293,10 +325,10 @@ function stopAnimation() {
     drawPlayButton();
 }
 
-function spacebarListener (){
-    if (animation.isRunning){
+function spacebarListener() {
+    if (animation.isRunning) {
         stopAnimation();
-    }else{
+    } else {
         startAnimation();
     }
 }

@@ -58,6 +58,25 @@ function prepareDayObjectRepublika(idDne) {
     } else { return; }
 }
 
+function countIncrements(subject, lastIndex) {
+    // zkontrolujeme platnost indexu
+    if (lastIndex < 0) return;
+
+    // spocteme prirustky odectenim sum dvou po sobe jdoucich dni. Pro prvni den (index nula) se odecita 0.
+    var i;
+    for (i = 0; i <= lastIndex; i++) {
+        var previousExists = typeof subject.prubeznaSuma[i - 1] === 'undefined';
+        subject.prubeznaSuma[i].celkemPrirustek = subject.prubeznaSuma[i].celkem - (previousExists ? 0 : subject.prubeznaSuma[i - 1].celkem);
+        subject.prubeznaSuma[i].prvniDavkaPrirustek = subject.prubeznaSuma[i].prvniDavka - (previousExists ? 0 : subject.prubeznaSuma[i - 1].prvniDavka);
+        subject.prubeznaSuma[i].druhaDavkaPrirustek = subject.prubeznaSuma[i].druhaDavka - (previousExists ? 0 : subject.prubeznaSuma[i - 1].druhaDavka);
+        subject.prubeznaSuma[i].vekova_skupina.forEach(function(skupina, idx){
+            skupina.celkemPrirustek = subject.prubeznaSuma[i].vekova_skupina[idx].celkem - (previousExists ? 0 : subject.prubeznaSuma[i-1].vekova_skupina[idx].celkem);
+            skupina.prvniDavkaPrirustek = subject.prubeznaSuma[i].vekova_skupina[idx].prvniDavka - (previousExists ? 0 : subject.prubeznaSuma[i-1].vekova_skupina[idx].prvniDavka);
+            skupina.druhaDavkaPrirustek = subject.prubeznaSuma[i].vekova_skupina[idx].druhaDavka - (previousExists ? 0 : subject.prubeznaSuma[i-1].vekova_skupina[idx].druhaDavka);
+        });
+    }
+}
+
 /**
  * spocte pocet dnu mezi dvema daty
  * @param {Date} dt1 prvni datum 
@@ -65,7 +84,7 @@ function prepareDayObjectRepublika(idDne) {
  * @returns {number} rozdil ve dnech
  */
 function countDaysBetweenDates(dt1, dt2) {
-    var diff = Math.abs(Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24)));
+    var diff = Math.abs(Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24)));
     return diff;
 }
 
@@ -159,33 +178,7 @@ function prepareSums() {
     // pripravime datove struktury vsech kraju
     kraje.forEach(function (kraj) {
         kraj.prubeznaSuma = [];
-        kraj.prubeznaSuma[0] = {
-            datum: dateEpochString,
-            celkem: 0,
-            prvniDavka: 0,
-            druhaDavka: 0,
-            vakcina: [
-                { nazev: "Comirnaty (Pfizer)", suma: 0, prvniDavka: 0, druhaDavka: 0 },
-                { nazev: "VAXZEVRIA (AstraZeneca)", suma: 0, prvniDavka: 0, druhaDavka: 0 },
-                { nazev: "Moderna", suma: 0, prvniDavka: 0, druhaDavka: 0 }
-            ],
-            vekova_skupina: [
-                { nazev: "0-17", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "18-24", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "25-29", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "30-34", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "35-39", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "40-44", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "45-49", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "50-54", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "55-59", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "60-64", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "65-69", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "70-74", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "75-79", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-                { nazev: "80", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
-            ],
-        }
+        kraj.prubeznaSuma[0] = JSON.parse(JSON.stringify(republika.prubeznaSuma[0]))
     });
 
     ockovaciZaznamy.forEach(function (zaznam) {
@@ -311,18 +304,25 @@ function prepareSums() {
             if (krajExists) {
                 kraje[nutsToIdMap[zaznam.kraj_nuts_kod]].prubeznaSuma[index].vekova_skupina[indexSkupiny].vakcina[indexVakciny] += zaznam.celkem_davek;
             }
-            
+
         }
     });
 
     // ujistime se, ze jsou vyplneny sumy pro vsechny dny a vsechny kraje (pokud se v kraji napriklad v nedeli neockovalo, chybel soucet a aplikace padala s chybou)
     var lastVaccineDateIndex = countDaysBetweenDates(dateEpoch, lastVaccineDate);
-    kraje.forEach(function(kraj, idKraje){
+    kraje.forEach(function (kraj, idKraje) {
         if (typeof kraj.prubeznaSuma[lastVaccineDateIndex] === 'undefined') {
             prepareDayObject(idKraje, lastVaccineDateIndex);
-            console.log("Chybi soucet pro kraj "+kraj.jmeno);
+            console.log("Chybi soucet pro kraj " + kraj.jmeno);
         }
     });
+
+    // spocteme a ulozime denni prirustky
+    countIncrements(republika, lastVaccineDateIndex);
+    kraje.forEach(function (kraj) {
+        countIncrements(kraj, lastVaccineDateIndex);
+    });
+    console.log(republika);
 }
 
 function initializeView() {
