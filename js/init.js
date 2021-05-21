@@ -69,10 +69,10 @@ function countIncrements(subject, lastIndex) {
         subject.prubeznaSuma[i].celkemPrirustek = subject.prubeznaSuma[i].celkem - (previousExists ? 0 : subject.prubeznaSuma[i - 1].celkem);
         subject.prubeznaSuma[i].prvniDavkaPrirustek = subject.prubeznaSuma[i].prvniDavka - (previousExists ? 0 : subject.prubeznaSuma[i - 1].prvniDavka);
         subject.prubeznaSuma[i].druhaDavkaPrirustek = subject.prubeznaSuma[i].druhaDavka - (previousExists ? 0 : subject.prubeznaSuma[i - 1].druhaDavka);
-        subject.prubeznaSuma[i].vekova_skupina.forEach(function(skupina, idx){
-            skupina.celkemPrirustek = subject.prubeznaSuma[i].vekova_skupina[idx].celkem - (previousExists ? 0 : subject.prubeznaSuma[i-1].vekova_skupina[idx].celkem);
-            skupina.prvniDavkaPrirustek = subject.prubeznaSuma[i].vekova_skupina[idx].prvniDavka - (previousExists ? 0 : subject.prubeznaSuma[i-1].vekova_skupina[idx].prvniDavka);
-            skupina.druhaDavkaPrirustek = subject.prubeznaSuma[i].vekova_skupina[idx].druhaDavka - (previousExists ? 0 : subject.prubeznaSuma[i-1].vekova_skupina[idx].druhaDavka);
+        subject.prubeznaSuma[i].vekova_skupina.forEach(function (skupina, idx) {
+            skupina.celkemPrirustek = subject.prubeznaSuma[i].vekova_skupina[idx].celkem - (previousExists ? 0 : subject.prubeznaSuma[i - 1].vekova_skupina[idx].celkem);
+            skupina.prvniDavkaPrirustek = subject.prubeznaSuma[i].vekova_skupina[idx].prvniDavka - (previousExists ? 0 : subject.prubeznaSuma[i - 1].vekova_skupina[idx].prvniDavka);
+            skupina.druhaDavkaPrirustek = subject.prubeznaSuma[i].vekova_skupina[idx].druhaDavka - (previousExists ? 0 : subject.prubeznaSuma[i - 1].vekova_skupina[idx].druhaDavka);
         });
     }
 }
@@ -155,7 +155,8 @@ function prepareSums() {
         vakcina: [
             { nazev: "Comirnaty (Pfizer)", suma: 0, prvniDavka: 0, druhaDavka: 0 },
             { nazev: "VAXZEVRIA (AstraZeneca)", suma: 0, prvniDavka: 0, druhaDavka: 0 },
-            { nazev: "Moderna", suma: 0, prvniDavka: 0, druhaDavka: 0 }
+            { nazev: "Moderna", suma: 0, prvniDavka: 0, druhaDavka: 0 },
+            { nazev: "Janssen (J&J)", suma: 0, prvniDavka: 0, druhaDavka: 0 }
         ],
         vekova_skupina: [
             { nazev: "0-17", celkem: 0, prvniDavka: 0, druhaDavka: 0, vakcina: [0, 0, 0] },
@@ -193,6 +194,9 @@ function prepareSums() {
                 break;
             case "COVID-19 Vaccine Moderna":
                 indexVakciny = 2;
+                break;
+            case "COVID-19 Vaccine Janssen":
+                indexVakciny = 3;
                 break;
             default:
                 indexVakciny = -1;
